@@ -133,7 +133,6 @@ export default function ReportsPage() {
 
       {/* Predefined Reports */}
       <div>
-        <h2 className="text-xl font-semibold mb-4">Predefined Insights</h2>
         <div className="grid gap-4 md:grid-cols-2">
           {predefinedReports.map((report) => {
             const Icon = report.icon
