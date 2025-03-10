@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+import { useRouter } from "next/navigation"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -30,6 +31,7 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const pathname = usePathname()
+  const router = useRouter()
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [isDarkMode, setIsDarkMode] = useState(false)
 
@@ -63,12 +65,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: Home },
-    { href: "/dashboard/loan-portfolio", label: "Loan Portfolio", icon: Briefcase },
+    //{ href: "/dashboard/loan-portfolio", label: "Loan Portfolio", icon: Briefcase },
     { href: "/dashboard/insights", label: "Insights", icon: FileText },
     { href: "/dashboard/alerts", label: "Risk Alerts", icon: Bell },
     { href: "/dashboard/analytics", label: "Analytics", icon: BarChart3 },
+    { href: "/dashboard/filing-reporting", label: "Filing & Reporting", icon: Briefcase },
     { href: "/dashboard/underwriting", label: "Underwriting", icon: Shield },
-    { href: "/dashboard/reviews", label: "Reviews", icon: Eye },
+    { href: "/dashboard/reviews", label: "Manual Review", icon: Eye },
     { href: "/dashboard/admin", label: "Admin Console", icon: Settings },
   ]
 
@@ -138,7 +141,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="md:hidden">
             <Menu className="h-5 w-5" />
           </Button>
-          <div className="ml-auto flex items-center space-x-4">
+          <div className="ml-auto flex items-center space-x-4" onClick={() => router.push("/dashboard/alerts")}>
             <Button variant="outline" size="icon" className="relative">
               <Bell className="h-5 w-5">
               </Bell>
