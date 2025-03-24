@@ -1,57 +1,49 @@
 "use client"
 
 import { useState } from "react"
-import { MessageSquare, Eye, EyeOff, Clock, User, History, Plus, Search, Filter, SortAsc, Download } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { MessageSquare, Eye, Clock, User, History, Plus, Filter, SortAsc, Download } from "lucide-react"
+import { AnnotationSystem } from "@/components/annotation-system"
+import { CollaborationModal } from "@/components/collaboration-modal-edit"
 
 export function CollaborationPanel() {
-  const [showAnnotationForm, setShowAnnotationForm] = useState(false)
+  const [collaborationModalOpen, setCollaborationModalOpen] = useState(false)
+  const [selectedDocument, setSelectedDocument] = useState<{ type: string; title: string } | null>(null)
+
+  const documents = [
+    { type: "delinquency", title: "Delinquency Analysis" },
+    { type: "underwriting", title: "Underwriting Performance Review" },
+    { type: "regional", title: "Regional Risk Assessment" },
+    { type: "customer", title: "Customer Segment Analysis" },
+  ]
+
+  const handleOpenDocument = (document: { type: string; title: string }) => {
+    setSelectedDocument(document)
+    setCollaborationModalOpen(true)
+  }
 
   return (
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle>Collaboration</CardTitle>
-              <CardDescription>Collaborate with your team on risk insights</CardDescription>
-            </div>
-            <Button onClick={() => setShowAnnotationForm(true)}>
-              <Plus className="mr-2 h-4 w-4" />
-              New Annotation
-            </Button>
-          </div>
+         
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue="annotations">
+          <Tabs defaultValue="documents">
             <TabsList className="mb-4">
-              <TabsTrigger value="annotations">Annotations</TabsTrigger>
+              <TabsTrigger value="documents">Reviews</TabsTrigger>
               <TabsTrigger value="audit">Audit Trail</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="annotations">
+            <TabsContent value="documents">
               <div className="mb-4 flex items-center gap-2">
-                <Input
-                  placeholder="Search annotations..."
-                  className="max-w-sm"
-                  prefix={<Search className="h-4 w-4 text-muted-foreground" />}
-                />
+                <Input placeholder="Search documents..." className="max-w-sm" />
                 <Button variant="outline" size="sm">
                   <Filter className="mr-2 h-4 w-4" />
                   Filter
@@ -60,116 +52,59 @@ export function CollaborationPanel() {
                   <SortAsc className="mr-2 h-4 w-4" />
                   Sort
                 </Button>
-                <Select defaultValue="all">
-                  <SelectTrigger className="w-[150px]">
-                    <SelectValue placeholder="Visibility" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All</SelectItem>
-                    <SelectItem value="public">Public</SelectItem>
-                    <SelectItem value="private">Private</SelectItem>
-                  </SelectContent>
-                </Select>
               </div>
 
               <ScrollArea className="h-[500px]">
                 <div className="space-y-4">
-                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
-                    <Card key={i}>
+                  {documents.map((doc, i) => (
+                    <Card key={i} className="cursor-pointer hover:bg-muted/50" onClick={() => handleOpenDocument(doc)}>
                       <CardHeader className="p-4">
                         <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <Avatar className="h-8 w-8">
-                              <AvatarImage src="/placeholder-user.jpg" />
-                              <AvatarFallback>{`U${i % 5}`}</AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <p className="text-sm font-medium">
-                                {i % 3 === 0 ? "Sarah Connor" : i % 3 === 1 ? "John Doe" : "Emily Johnson"}
-                              </p>
-                              <div className="flex items-center gap-2">
-                                <Clock className="h-3 w-3 text-muted-foreground" />
-                                <span className="text-xs text-muted-foreground">
-                                  {i % 2 === 0 ? "2 hours ago" : "Yesterday"}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            {i % 2 === 0 ? (
-                              <Badge variant="outline" className="flex items-center gap-1">
-                                <EyeOff className="h-3 w-3" />
-                                Private
-                              </Badge>
-                            ) : (
-                              <Badge variant="secondary" className="flex items-center gap-1">
-                                <Eye className="h-3 w-3" />
-                                Public
-                              </Badge>
-                            )}
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm">
-                                  <span className="sr-only">Actions</span>
-                                  <span className="text-xs">•••</span>
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuItem>Edit</DropdownMenuItem>
-                                <DropdownMenuItem>Reply</DropdownMenuItem>
-                                <DropdownMenuItem>Share</DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem>Delete</DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </div>
+                          <CardTitle className="text-lg">{doc.title}</CardTitle>
+                          <Badge variant="outline">
+                            {doc.type === "delinquency"
+                              ? "Delinquency"
+                              : doc.type === "underwriting"
+                                ? "Underwriting"
+                                : doc.type === "regional"
+                                  ? "Regional"
+                                  : "Customer"}
+                          </Badge>
                         </div>
+                        <CardDescription>Last edited by John Doe • 2 hours ago</CardDescription>
                       </CardHeader>
                       <CardContent className="p-4 pt-0">
-                        <div>
-                          <p className="text-sm">
-                            {i % 3 === 0
-                              ? "The increase in delinquency for personal loans needs further investigation. I've noticed a correlation with recent marketing campaigns targeting high-risk segments."
-                              : i % 3 === 1
-                                ? "Underwriting performance for the 'Young Professional' segment has degraded significantly. We should review our credit scoring model for this segment."
-                                : "The regional variation in delinquency rates suggests we may need to adjust our risk models to account for local economic factors."}
-                          </p>
-                          <div className="mt-2">
-                            <Badge variant="outline">
-                              {i % 3 === 0
-                                ? "Delinquency Analysis"
-                                : i % 3 === 1
-                                  ? "Underwriting Performance"
-                                  : "Regional Analysis"}
-                            </Badge>
+                        <div className="flex items-center gap-4">
+                          <div className="flex -space-x-2">
+                            <Avatar className="h-6 w-6 border-2 border-background">
+                              <AvatarFallback>JD</AvatarFallback>
+                            </Avatar>
+                            <Avatar className="h-6 w-6 border-2 border-background">
+                              <AvatarFallback>SC</AvatarFallback>
+                            </Avatar>
+                            <Avatar className="h-6 w-6 border-2 border-background">
+                              <AvatarFallback>EJ</AvatarFallback>
+                            </Avatar>
+                          </div>
+                          <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                            <MessageSquare className="h-4 w-4" />
+                            <span>{i + 3} comments</span>
                           </div>
                         </div>
                       </CardContent>
-                      <CardFooter className="p-4 pt-0">
-                        <div className="flex items-center gap-2">
-                          <Button variant="ghost" size="sm">
-                            <MessageSquare className="mr-2 h-4 w-4" />
-                            Reply
-                          </Button>
-                          <Button variant="ghost" size="sm">
-                            <Eye className="mr-2 h-4 w-4" />
-                            View Context
-                          </Button>
-                        </div>
-                      </CardFooter>
                     </Card>
                   ))}
                 </div>
               </ScrollArea>
             </TabsContent>
 
+            <TabsContent value="annotations">
+              <AnnotationSystem />
+            </TabsContent>
+
             <TabsContent value="audit">
               <div className="mb-4 flex items-center gap-2">
-                <Input
-                  placeholder="Search audit trail..."
-                  className="max-w-sm"
-                  prefix={<Search className="h-4 w-4 text-muted-foreground" />}
-                />
+                <Input placeholder="Search audit trail..." className="max-w-sm" />
                 <Button variant="outline" size="sm">
                   <Download className="mr-2 h-4 w-4" />
                   Export
@@ -195,10 +130,10 @@ export function CollaborationPanel() {
                             {i % 4 === 0
                               ? "added an annotation"
                               : i % 4 === 1
-                                ? "viewed a report"
+                                ? "viewed a document"
                                 : i % 4 === 2
                                   ? "exported data"
-                                  : "created an action"}
+                                  : "created a document"}
                           </span>
                         </div>
                         <p className="text-sm text-muted-foreground">
@@ -208,7 +143,7 @@ export function CollaborationPanel() {
                               ? "Viewed Underwriting Performance Report"
                               : i % 4 === 2
                                 ? "Exported Delinquency Data"
-                                : "Created action for CRO approval"}
+                                : "Created Regional Risk Assessment document"}
                         </p>
                         <div className="mt-1 flex items-center gap-2">
                           <Clock className="h-3 w-3 text-muted-foreground" />
@@ -226,80 +161,11 @@ export function CollaborationPanel() {
         </CardContent>
       </Card>
 
-      {showAnnotationForm && (
-        <Card>
-          <CardHeader>
-            <CardTitle>New Annotation</CardTitle>
-            <CardDescription>Add a new annotation to share insights with your team</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-medium">Context</label>
-                <Select defaultValue="delinquency">
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select context" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="delinquency">Delinquency Analysis</SelectItem>
-                    <SelectItem value="underwriting">Underwriting Performance</SelectItem>
-                    <SelectItem value="regional">Regional Analysis</SelectItem>
-                    <SelectItem value="customer">Customer Segment Analysis</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <label className="text-sm font-medium">Annotation</label>
-                <Textarea placeholder="Enter your annotation..." className="min-h-[100px]" />
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <label className="text-sm font-medium">Visibility:</label>
-                  <Select defaultValue="public">
-                    <SelectTrigger className="w-[120px]">
-                      <SelectValue placeholder="Select visibility" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="public">
-                        <div className="flex items-center gap-2">
-                          <Eye className="h-4 w-4" />
-                          <span>Public</span>
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="private">
-                        <div className="flex items-center gap-2">
-                          <EyeOff className="h-4 w-4" />
-                          <span>Private</span>
-                        </div>
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="flex items-center gap-2">
-                  <label className="text-sm font-medium">Notify:</label>
-                  <Select defaultValue="none">
-                    <SelectTrigger className="w-[150px]">
-                      <SelectValue placeholder="Select users" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">No one</SelectItem>
-                      <SelectItem value="team">My Team</SelectItem>
-                      <SelectItem value="all">All Collaborators</SelectItem>
-                      <SelectItem value="specific">Specific Users</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-          <CardFooter className="flex justify-between">
-            <Button variant="outline" onClick={() => setShowAnnotationForm(false)}>
-              Cancel
-            </Button>
-            <Button onClick={() => setShowAnnotationForm(false)}>Save Annotation</Button>
-          </CardFooter>
-        </Card>
-      )}
+      <CollaborationModal
+        open={collaborationModalOpen}
+        onOpenChange={setCollaborationModalOpen}
+        initialContext={selectedDocument || undefined}
+      />
     </div>
   )
 }

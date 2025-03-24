@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { FileText, Download, Share2, Plus, Filter, Calendar, BarChart3, PieChart, Sparkles, Home,Eye } from "lucide-react"
 import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from "next/navigation"
+import { CollaborationModal } from "@/components/collaboration-modal-new"
 
 
 export default function ReportsPage() {
@@ -63,6 +64,10 @@ export default function ReportsPage() {
         description: "Your custom loan portfolio AI insights has been successfully generated.",
       })
     }, 3000)
+  }
+
+  const handleCollaboration = () => {
+     
   }
 
   return (
