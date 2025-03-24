@@ -8,8 +8,8 @@ import { AIChat } from "./ai-agent/ai-chat"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Glegs AI Monitor",
-  description: "AI-powered portfolio monitoring application",
+  title: "Elimentary",
+  description: "AI-powered risk platform",
     generator: 'v0.dev'
 }
 

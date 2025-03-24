@@ -17,13 +17,15 @@ import {
   LogOut,
   Moon,
   Sun,
-  CreditCard,
   Briefcase,
   Shield,
   Eye,
+  PanelLeft
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { UserNav } from "@/components/user-nav"
+import { TeamSwitcher } from "@/components/team-switcher"
 
 interface DashboardLayoutProps {
   children: React.ReactNode
@@ -68,7 +70,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     //{ href: "/dashboard/loan-portfolio", label: "Loan Portfolio", icon: Briefcase },
     { href: "/dashboard/insights", label: "Insights", icon: FileText },
     { href: "/dashboard/alerts", label: "Risk Alerts", icon: Bell },
-    { href: "/dashboard/analytics", label: "Analytics", icon: BarChart3 },
+   // { href: "/dashboard/analytics", label: "Analytics", icon: BarChart3 },
     { href: "/dashboard/filing-reporting", label: "Filing & Reporting", icon: Briefcase },
     { href: "/dashboard/underwriting", label: "Underwriting", icon: Shield },
     { href: "/dashboard/reviews", label: "Manual Review", icon: Eye },
@@ -80,21 +82,29 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-64 transform bg-card border-r transition-transform duration-300 ease-in-out md:relative md:translate-x-0",
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full",
+          "fixed inset-y-0 left-0 z-50 w-70 transform bg-card transition-transform duration-300 ease-in-out md:relative md:translate-x-0",
+          isSidebarOpen ? "w-64" : "w-16",
         )}
       >
-        <div className="flex h-full flex-col">
+        <div className="flex h-full flex-col ">
           <div className="flex h-16 items-center justify-between px-4 border-b">
             <Link href="/dashboard" className="flex items-center space-x-2">
-              <CreditCard className="h-6 w-6 text-primary" />
-              <span className="text-xl font-bold">Glegs.AI</span>
+            <Button
+              variant="outline"
+              size="icon"
+              className="mr-2 hidden md:flex"
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            >
+              <PanelLeft className="h-4 w-4" />
+              <span className="sr-only">Toggle Sidebar</span>
+            </Button>
+            <TeamSwitcher />
             </Link>
             <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(false)} className="md:hidden">
               <X className="h-5 w-5" />
             </Button>
           </div>
-          <nav className="flex-1 overflow-y-auto p-4">
+          <nav className="flex-1 overflow-y-auto p-4 border-r">
             <ul className="space-y-2">
               {navItems.map((item) => {
                 const isActive = pathname === item.href
@@ -119,17 +129,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               })}
             </ul>
           </nav>
-          <div className="border-t p-4">
+          <div className="border-t p-4 border-r">
             <div className="flex items-center justify-between">
               <Button variant="ghost" size="sm" onClick={toggleDarkMode}>
                 {isDarkMode ? <Sun className="h-5 w-5 mr-2" /> : <Moon className="h-5 w-5 mr-2" />}
                 {isDarkMode ? "Light Mode" : "Dark Mode"}
               </Button>
             </div>
-            <Button variant="outline" className="mt-4 w-full justify-start">
-              <LogOut className="mr-2 h-4 w-4" />
-              Log Out
-            </Button>
           </div>
         </div>
       </aside>
@@ -149,12 +155,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             </Button>
             <div className="relative h-8 w-8 rounded-full bg-primary">
               <span className="absolute inset-0 flex items-center justify-center text-xs font-medium text-primary-foreground">
-                YG
+                <UserNav />
               </span>
             </div>
           </div>
         </header>
-
         {/* Main content area */}
         <main className="flex-1 overflow-y-auto p-4 md:p-6">{children}</main>
       </div>

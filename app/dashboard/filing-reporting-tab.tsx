@@ -17,7 +17,7 @@ export default function FilingReportingTab() {
       title: "Monthly Business Review",
       description: "Comprehensive monthly overview of business performance, KPIs, and strategic initiatives.",
       frequency: "Monthly",
-      lastGenerated: "15 Apr 2023",
+      lastGenerated: "15 Apr 2024",
       dueDate: "5th of every month",
     },
     {
@@ -25,7 +25,7 @@ export default function FilingReportingTab() {
       title: "Quarterly Business Review",
       description: "In-depth analysis of quarterly performance, market trends, and financial projections.",
       frequency: "Quarterly",
-      lastGenerated: "10 Mar 2023",
+      lastGenerated: "10 Mar 2024",
       dueDate: "15th of quarter end month",
     },
     {
@@ -34,7 +34,7 @@ export default function FilingReportingTab() {
       description:
         "Year-end summary of business achievements, challenges, and strategic planning for the next fiscal year.",
       frequency: "Annually",
-      lastGenerated: "20 Jan 2023",
+      lastGenerated: "20 Jan 2024",
       dueDate: "January 31st",
     },
   ]
@@ -46,7 +46,7 @@ export default function FilingReportingTab() {
       description:
         "Mandatory reporting to the Federal Reserve including capital adequacy, liquidity, and risk exposure.",
       frequency: "Quarterly",
-      lastGenerated: "28 Mar 2023",
+      lastGenerated: "28 Mar 2024",
       dueDate: "30 days after quarter end",
       authority: "Federal Reserve",
     },
@@ -56,7 +56,7 @@ export default function FilingReportingTab() {
       description:
         "Financial Conduct Authority required reporting on conduct, customer outcomes, and regulatory compliance.",
       frequency: "Bi-annually",
-      lastGenerated: "15 Feb 2023",
+      lastGenerated: "15 Feb 2024",
       dueDate: "June 30th & December 31st",
       authority: "Financial Conduct Authority",
     },
@@ -65,7 +65,7 @@ export default function FilingReportingTab() {
       title: "AML/KYC Compliance Report",
       description: "Anti-Money Laundering and Know Your Customer compliance reporting for regulatory oversight.",
       frequency: "Monthly",
-      lastGenerated: "5 Apr 2023",
+      lastGenerated: "5 Apr 2024",
       dueDate: "10th of every month",
       authority: "FinCEN/Local Regulator",
     },
