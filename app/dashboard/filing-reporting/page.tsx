@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator"
 
 export default function FilingReportingPage() {
   return (
-    <div className="container mx-auto py-8 space-y-8">
+    <div className="">
       <FilingReportingTab />
       <Separator className="my-8" />
       <ReportHistory />

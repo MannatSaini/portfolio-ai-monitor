@@ -7,6 +7,7 @@ import { FileText, Download, Share2, Plus, Filter, Calendar, BarChart3, PieChart
 import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from "next/navigation"
 
+
 export default function ReportsPage() {
   const { toast } = useToast()
   const router = useRouter()
@@ -106,7 +107,7 @@ export default function ReportsPage() {
               Our AI can analyze your loan portfolio and generate custom insights based on your specific needs. Simply
               describe what you're looking for, and our AI will create a detailed insights for you.
             </p>
-            <div className="rounded-md border p-4 bg-white dark:bg-gray-900">
+            <div className="rounded-md border p-4 bg-white dark:bg-gray-900" >
               <h3 className="font-medium mb-2">Example prompts:</h3>
               <ul className="text-sm space-y-2 text-muted-foreground">
                 <li>• "Analyze delinquency risk factors for unsecured loans in the 25-35 age group"</li>
