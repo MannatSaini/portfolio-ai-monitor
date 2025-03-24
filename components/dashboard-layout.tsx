@@ -147,12 +147,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="md:hidden">
             <Menu className="h-5 w-5" />
           </Button>
-          <div className="ml-auto flex items-center space-x-4" onClick={() => router.push("/dashboard/alerts")}>
-            <Button variant="outline" size="icon" className="relative">
-              <Bell className="h-5 w-5">
-              </Bell>
-              <div className="text-red-600 font-medium text-primary-foreground">18</div>
-            </Button>
+          <div className="ml-auto flex items-center space-x-4" >
             <div className="relative h-8 w-8 rounded-full bg-primary">
               <span className="absolute inset-0 flex items-center justify-center text-xs font-medium text-primary-foreground">
                 <UserNav />
