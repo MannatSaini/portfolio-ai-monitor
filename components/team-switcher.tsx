@@ -80,7 +80,7 @@ export function TeamSwitcher({ className }: TeamSwitcherProps) {
               <AvatarFallback>RM</AvatarFallback>
             </Avatar>
             {selectedTeam.label}
-            <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+            <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-100" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">

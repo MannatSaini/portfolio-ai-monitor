@@ -180,13 +180,7 @@ export default function RiskInsightsOverview() {
                   </div>
                 </ScrollArea>
               </CardContent>
-              <CardFooter>
-                <Button variant="outline" className="w-full">
-                  <MessageSquare className="mr-2 h-4 w-4" />
-                  Add Annotation
-                </Button>
-              </CardFooter>
-            </Card>
+              </Card>
             <Card className="col-span-4">
               <CardHeader>
                 <CardTitle>Recent Actions</CardTitle>
@@ -282,12 +276,6 @@ export default function RiskInsightsOverview() {
                   </div>
                 </ScrollArea>
               </CardContent>
-              <CardFooter>
-                <Button className="w-full" onClick={() => setShowActionCreator(true)}>
-                  <Plus className="mr-2 h-4 w-4" />
-                  Create New Action
-                </Button>
-              </CardFooter>
             </Card>
           </div>
         </TabsContent>
@@ -309,7 +297,7 @@ export default function RiskInsightsOverview() {
                   </Button>
                   <Button variant="outline" size="sm">
                     <Pencil className="mr-2 h-4 w-4" />
-                    Annotate
+                    Comment
                   </Button>
                 </div>
               </div>
@@ -368,7 +356,7 @@ export default function RiskInsightsOverview() {
                   </Button>
                   <Button variant="outline" size="sm">
                     <Pencil className="mr-2 h-4 w-4" />
-                    Annotate
+                    Comment
                   </Button>
                 </div>
               </div>

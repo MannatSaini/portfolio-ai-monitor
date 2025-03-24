@@ -273,10 +273,6 @@ export function DataTable() {
           className="max-w-sm"
         />
         <div className="ml-auto flex items-center gap-2">
-          <Button variant="outline" size="sm">
-            <Download className="mr-2 h-4 w-4" />
-            Export
-          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
