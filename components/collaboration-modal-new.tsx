@@ -183,9 +183,12 @@ export function CollaborationModal({
             <div className="prose prose-sm max-w-3xl mx-auto">
               <h1>Delinquency Analysis</h1>
               <p>
-               
+              -------------------Add Details-------------------
               </p>
-              
+              <h2>Key Findings</h2>
+              -------------------Add Details-------------------
+              <h2>Recommendations</h2>
+              -------------------Add Details-------------------
             </div>
           </div>
 

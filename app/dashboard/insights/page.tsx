@@ -13,6 +13,7 @@ export default function ReportsPage() {
   const { toast } = useToast()
   const router = useRouter()
   const [isGenerating, setIsGenerating] = useState(false)
+  const [collaborationModalOpen, setCollaborationModalOpen] = useState(false)
 
   const predefinedReports = [
     {
@@ -67,7 +68,7 @@ export default function ReportsPage() {
   }
 
   const handleCollaboration = () => {
-     
+    setCollaborationModalOpen(true)     
   }
 
   return (
@@ -91,10 +92,6 @@ export default function ReportsPage() {
             Date Range
           </Button>
         </div>
-        <Button>
-          <Plus className="mr-2 h-4 w-4" />
-          Create Insights
-        </Button>
       </div>
 
       {/* AI Report Generator */}
@@ -170,7 +167,7 @@ export default function ReportsPage() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  <Button size="sm" onClick={() => router.push("/dashboard/reviews")}>
+                  <Button size="sm" onClick={handleCollaboration} >
                     <Eye className="mr-2 h-4 w-4" />
                     Review
                   </Button>
@@ -222,6 +219,10 @@ export default function ReportsPage() {
           </div>
         </CardContent>
       </Card>
+        <CollaborationModal
+              open={collaborationModalOpen}
+              onOpenChange={setCollaborationModalOpen}
+            />
     </div>
   )
 }
