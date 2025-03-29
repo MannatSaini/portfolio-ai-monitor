@@ -3,14 +3,15 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "@/components/ui/toaster"
-import { AIChat } from "./ai-agent/ai-chat"
+import { AIProvider } from "@/components/ai-agent/ai-provider"
+
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Elimentary",
   description: "AI-powered risk platform",
-    generator: 'v0.dev'
+    generator: 'MS'
 }
 
 export default function RootLayout({
@@ -21,9 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
+        {/*children */}
         <Toaster />
-        <AIChat />
+        <AIProvider initialDebugMode={false}>{children}</AIProvider>
       </body>
     </html>
   )

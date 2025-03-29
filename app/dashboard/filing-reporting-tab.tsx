@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
-import { FileText, Download, Eye, Clock } from "lucide-react"
+import { FileText, Download, Eye, Clock,LayoutTemplate } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 
@@ -74,7 +74,7 @@ export default function FilingReportingTab() {
   return (
     <div className="w-full p-6 space-y-6">
       <div className="flex flex-col space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Filing & Reporting</h2>
+        <h2 className="text-3xl font-bold tracking-tight">Risk Operations</h2>
         <p className="text-muted-foreground">Manage your internal and regulatory reporting templates and submissions</p>
       </div>
 
@@ -112,12 +112,12 @@ export default function FilingReportingTab() {
                 </CardContent>
                 <CardFooter className="flex justify-between pt-3 border-t">
                   <Button variant="outline" size="sm" className="gap-1">
-                    <Eye className="h-4 w-4" />
-                    Preview
+                    <LayoutTemplate className="h-4 w-4" />
+                    Templates
                   </Button>
                   <Button size="sm" className="gap-1">
-                    <FileText className="h-4 w-4" />
-                    Generate
+                    <Eye className="h-4 w-4" />
+                    Preview
                   </Button>
                 </CardFooter>
               </Card>
@@ -157,8 +157,8 @@ export default function FilingReportingTab() {
                 </CardContent>
                 <CardFooter className="flex justify-between pt-3 border-t">
                   <Button variant="outline" size="sm" className="gap-1">
-                    <Download className="h-4 w-4" />
-                    Template
+                    <LayoutTemplate className="h-4 w-4" />
+                    Templates
                   </Button>
                   <Button size="sm" className="gap-1">
                     <FileText className="h-4 w-4" />

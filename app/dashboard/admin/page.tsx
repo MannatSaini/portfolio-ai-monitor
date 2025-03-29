@@ -98,11 +98,11 @@ export default function AdminConsolePage() {
               </div>
               <div className="flex items-center justify-between">
                 <span className="font-medium">Accuracy</span>
-                <span>92.3%</span>
+                <span>85.3%</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="font-medium">Last Trained</span>
-                <span>3 days ago</span>
+                <span>90 days ago</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="font-medium">Status</span>
@@ -286,7 +286,7 @@ export default function AdminConsolePage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm">Refresh Frequency</span>
-                    <span className="text-sm font-medium">Daily</span>
+                    <span className="text-sm font-medium">Quaterly</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm">Refresh Time</span>
