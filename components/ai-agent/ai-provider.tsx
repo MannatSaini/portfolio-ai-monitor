@@ -8,21 +8,38 @@ type AIContextType = {
   openChat: () => void
   closeChat: () => void
   toggleChat: () => void
+  debugMode: boolean
+  setDebugMode: (value: boolean) => void
 }
 
 const AIContext = createContext<AIContextType | undefined>(undefined)
 
-export function AIProvider({ children }: { children: ReactNode }) {
+interface AIProviderProps {
+  children: ReactNode
+  initialDebugMode?: boolean
+}
+
+export function AIProvider({ children, initialDebugMode = false }: AIProviderProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [debugMode, setDebugMode] = useState(initialDebugMode)
 
   const openChat = () => setIsOpen(true)
   const closeChat = () => setIsOpen(false)
   const toggleChat = () => setIsOpen((prev) => !prev)
 
   return (
-    <AIContext.Provider value={{ isOpen, openChat, closeChat, toggleChat }}>
+    <AIContext.Provider
+      value={{
+        isOpen,
+        openChat,
+        closeChat,
+        toggleChat,
+        debugMode,
+        setDebugMode,
+      }}
+    >
       {children}
-      <AIChat />
+      <AIChat debugMode={debugMode} />
     </AIContext.Provider>
   )
 }
