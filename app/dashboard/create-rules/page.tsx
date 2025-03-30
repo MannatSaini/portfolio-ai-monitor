@@ -141,7 +141,7 @@ export default function SocureVerificationUI() {
 
         {/* Tabs */}
         <div className="flex border-b">
-          {["Logic", "Inspect data", "Insights", "Comments (0)"].map((tab) => (
+          {["Logic", "Comments (0)"].map((tab) => (
             <button
               key={tab}
               className={cn(
@@ -172,16 +172,9 @@ export default function SocureVerificationUI() {
             {isConfigExpanded && (
               <div className="p-4 pt-0 space-y-4">
                 {[
-                  { label: "First name", field: "data.first_name" },
-                  { label: "Last name", field: "data.last_name" },
-                  { label: "Full name", field: "data.field" },
-                  { label: "Date of birth", field: "data.dob", hasAsterisk: true },
-                  { label: "National ID", field: "data.ssn", hasAsterisk: true },
-                  { label: "Phone number", field: "data.phone_number", hasAsterisk: true },
-                  { label: "Email", field: "data.email_address", hasAsterisk: true },
-                  { label: "User consent", field: "data.field" },
-                  { label: "Consent timestamp", field: "data.field" },
-                  { label: "Company name", field: "data.field" },
+                  { label: "Credit Score", field: "620" },
+                  { label: "Debt-to-income", field: "43%" },
+                  { label: "Loan-to-Value", field: "80%" },
                 ].map((item) => (
                   <div key={item.label} className="grid grid-cols-[180px_1fr] gap-4 items-center">
                     <div className="flex items-center gap-1">
