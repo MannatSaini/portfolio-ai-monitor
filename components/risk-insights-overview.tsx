@@ -138,7 +138,7 @@ export default function RiskInsightsOverview() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
             <Card className="col-span-3">
               <CardHeader>
-                <CardTitle>Recent Annotations</CardTitle>
+                <CardTitle>Annotations</CardTitle>
                 <CardDescription>Latest comments and notes from your team</CardDescription>
               </CardHeader>
               <CardContent>
@@ -183,7 +183,7 @@ export default function RiskInsightsOverview() {
               </Card>
             <Card className="col-span-4">
               <CardHeader>
-                <CardTitle>Recent Actions</CardTitle>
+                <CardTitle>Actions & Reports</CardTitle>
                 <CardDescription>Status of recent actions and reports</CardDescription>
               </CardHeader>
               <CardContent>

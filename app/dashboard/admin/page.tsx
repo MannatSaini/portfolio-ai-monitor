@@ -286,7 +286,7 @@ export default function AdminConsolePage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm">Refresh Frequency</span>
-                    <span className="text-sm font-medium">Quaterly</span>
+                    <span className="text-sm font-medium">Quarterly</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm">Refresh Time</span>

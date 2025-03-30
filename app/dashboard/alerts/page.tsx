@@ -195,7 +195,7 @@ export default function AlertsPage() {
                     </div>
                   </div>
                   <div className="ml-4">
-                    <Button variant="outline" size="sm" onClick={() => router.push("/dashboard/reviews")}>
+                    <Button variant="outline" size="sm" onClick={() => router.push("/dashboard/alert-reviews")}>
                       {alert.status === "active" ? "Review" : "Reopen"}
                     </Button>
                   </div>

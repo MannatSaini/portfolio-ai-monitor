@@ -46,69 +46,54 @@ export default function DelinquencyReviewPage() {
   // Sample delinquent loans data
   const delinquentLoans = [
     {
-      id: "UL-56789",
+      id: "APP-UL-56789",
       type: "Unsecured Loan",
       customer: "Sarah Wilson",
       age: 24,
       amount: 12000,
-      daysLate: 45,
-      missedPayments: 2,
-      creditScore: 650,
-      riskLevel: "Medium",
-      lastContact: "3 days ago",
-      nextAction: "Follow-up call",
+      creditScore: 664,
+      applicationDate: "3 days ago",
+      nextAction: "Verify score from another bureau",
     },
     {
-      id: "SL-12345",
+      id: "APP-SL-12345",
       type: "Secured Loan",
       customer: "Michael Brown",
       age: 35,
       amount: 45000,
-      daysLate: 60,
-      missedPayments: 3,
-      creditScore: 690,
-      riskLevel: "High",
-      lastContact: "1 week ago",
-      nextAction: "Restructure proposal",
+      creditScore: 630,
+      applicationDate: "1 week ago",
+      nextAction: "Get insights from non bureau data",
     },
     {
-      id: "CD-45678",
+      id: "APP-CD-45678",
       type: "Consumer Durables",
       customer: "Emily Johnson",
       age: 29,
       amount: 8500,
-      daysLate: 30,
-      missedPayments: 1,
-      creditScore: 710,
-      riskLevel: "Low",
-      lastContact: "Yesterday",
-      nextAction: "Payment reminder",
+      creditScore: 677,
+      applicationDate: "Yesterday",
+      nextAction: "Approved.No Action required",
     },
     {
-      id: "HL-23456",
+      id: "APP-HL-23456",
       type: "Housing Loan",
       customer: "Robert Davis",
       age: 51,
       amount: 275000,
-      daysLate: 90,
-      missedPayments: 4,
-      creditScore: 780,
-      riskLevel: "Critical",
-      lastContact: "2 weeks ago",
-      nextAction: "Legal review",
+      creditScore: 672,
+      applicationDate: "2 weeks ago",
+      nextAction: "Verify score from another bureau",
     },
     {
-      id: "UL-34567",
+      id: "APP-UL-34567",
       type: "Unsecured Loan",
       customer: "Jennifer Lee",
       age: 32,
       amount: 15000,
-      daysLate: 35,
-      missedPayments: 1,
       creditScore: 675,
-      riskLevel: "Medium",
-      lastContact: "5 days ago",
-      nextAction: "Payment plan discussion",
+      applicationDate: "5 days ago",
+      nextAction: "Verify score from another bureau",
     },
   ]
 
@@ -197,50 +182,38 @@ export default function DelinquencyReviewPage() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Reviews</h1>
-        <p className="text-muted-foreground">Review and manage your portfolio.</p>
+        <h1 className="text-3xl font-bold tracking-tight">Manual Reviews</h1>
+        <p className="text-muted-foreground">Review and enhance your acquisition pipeline </p>
       </div>
 
       {/* Overview Cards */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Delinquent Loans</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Manual reviews</CardTitle>
             <AlertTriangle className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">187</div>
-            <p className="text-xs text-muted-foreground">+12 from last month</p>
+            <div className="text-2xl font-bold">5</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Delinquency Rate</CardTitle>
+            <CardTitle className="text-sm font-medium">Approved</CardTitle>
             <TrendingUp className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">2.4%</div>
-            <p className="text-xs text-muted-foreground">+0.3% from last month</p>
+            <div className="text-2xl font-bold">0</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Average Days Late</CardTitle>
+            <CardTitle className="text-sm font-medium">Pending</CardTitle>
             <Clock className="h-4 w-4 text-amber-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">42</div>
-            <p className="text-xs text-muted-foreground">-3 days from last month</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Recovery Rate</CardTitle>
-            <TrendingDown className="h-4 w-4 text-green-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">68%</div>
-            <p className="text-xs text-muted-foreground">+5% from last month</p>
+            <div className="text-2xl font-bold">5</div>
+            <p className="text-xs text-muted-foreground"></p>
           </CardContent>
         </Card>
       </div>
@@ -251,7 +224,7 @@ export default function DelinquencyReviewPage() {
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <input
             type="text"
-            placeholder="Search loans..."
+            placeholder="Search cases..."
             className="w-full sm:w-[300px] pl-8 h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -278,10 +251,6 @@ export default function DelinquencyReviewPage() {
       </div>
 
       {/* Delinquent Loans Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Alerts</CardTitle>
-        </CardHeader>
         <CardContent>
           <div className="rounded-md border">
             <div className="relative w-full overflow-auto">
@@ -297,16 +266,15 @@ export default function DelinquencyReviewPage() {
                     </th>
                     <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">
                       <div className="flex items-center space-x-2">
-                        <span>Loan ID</span>
+                        <span>Application ID</span>
                         <ArrowUpDown className="h-4 w-4" />
                       </div>
                     </th>
                     <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Customer</th>
                     <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Type</th>
                     <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Amount</th>
-                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Days Late</th>
-                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Risk Level</th>
-                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Last Contact</th>
+                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Insights</th>
+                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Application Date</th>
                     <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Actions</th>
                   </tr>
                 </thead>
@@ -333,19 +301,9 @@ export default function DelinquencyReviewPage() {
                       <td className="p-4 align-middle">{loan.type}</td>
                       <td className="p-4 align-middle">${loan.amount.toLocaleString()}</td>
                       <td className="p-4 align-middle">
-                        <span className={`font-medium ${getDaysLateColor(loan.daysLate)}`}>{loan.daysLate} days</span>
-                        <p className="text-xs text-muted-foreground">{loan.missedPayments} missed payments</p>
+                        <span className={`font-medium ${getDaysLateColor(loan.creditScore)}`}>{loan.creditScore} creditScore</span>
                       </td>
-                      <td className="p-4 align-middle">
-                        <span
-                          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getRiskLevelColor(
-                            loan.riskLevel,
-                          )}`}
-                        >
-                          {loan.riskLevel}
-                        </span>
-                      </td>
-                      <td className="p-4 align-middle text-muted-foreground">{loan.lastContact}</td>
+                      <td className="p-4 align-middle text-muted-foreground">{loan.applicationDate}</td>
                       <td className="p-4 align-middle">
                         <Button variant="ghost" size="sm" onClick={() => handleViewDetail(loan)}>
                           View
@@ -358,7 +316,6 @@ export default function DelinquencyReviewPage() {
             </div>
           </div>
         </CardContent>
-      </Card>
 
       {/* Share Modal */}
       <Dialog open={isShareModalOpen} onOpenChange={setIsShareModalOpen}>
@@ -397,7 +354,7 @@ export default function DelinquencyReviewPage() {
                 <Textarea
                   id="message"
                   placeholder="Add a message..."
-                  defaultValue={`Please review the attached delinquency report for ${selectedLoans.length} loans that require attention.`}
+                  defaultValue={`Please review the attached application for ${selectedLoans.length} loans that require attention.`}
                   rows={4}
                 />
               </div>
@@ -501,7 +458,7 @@ export default function DelinquencyReviewPage() {
                   <SelectValue placeholder="Select assignee" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="delinquency-team">Delinquency Team</SelectItem>
+                  <SelectItem value="delinquency-team">Acquistion Team</SelectItem>
                   <SelectItem value="john.smith">John Smith</SelectItem>
                   <SelectItem value="sarah.johnson">Sarah Johnson</SelectItem>
                   <SelectItem value="michael.brown">Michael Brown</SelectItem>
@@ -510,14 +467,14 @@ export default function DelinquencyReviewPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="summary">Summary</Label>
-              <Input id="summary" defaultValue={`Delinquency Review Required - ${selectedLoans.length} Loans`} />
+              <Input id="summary" defaultValue={`Application Review Required - ${selectedLoans.length} Loans`} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="description">Description</Label>
               <Textarea
                 id="description"
                 placeholder="Add a description..."
-                defaultValue={`Please review and take appropriate action on the following delinquent loans:\n\n${selectedLoans.join(
+                defaultValue={`Please review and take appropriate action on the following loan applications:\n\n${selectedLoans.join(
                   ", ",
                 )}\n\nTotal loans: ${selectedLoans.length}`}
                 rows={4}
@@ -529,7 +486,7 @@ export default function DelinquencyReviewPage() {
                 htmlFor="include-loan-details"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
-                Include detailed loan information
+                Include detailed application information
               </label>
             </div>
           </div>
@@ -546,17 +503,17 @@ export default function DelinquencyReviewPage() {
       <Dialog open={isDetailViewOpen} onOpenChange={setIsDetailViewOpen}>
         <DialogContent className="sm:max-w-[700px]">
           <DialogHeader>
-            <DialogTitle>Loan Details</DialogTitle>
+            <DialogTitle>Application Details</DialogTitle>
             <DialogDescription>Detailed information for loan {selectedLoanDetail?.id}</DialogDescription>
           </DialogHeader>
           {selectedLoanDetail && (
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h3 className="text-sm font-medium">Loan Information</h3>
+                  <h3 className="text-sm font-medium">Application Information</h3>
                   <div className="mt-2 space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground">Loan ID:</span>
+                      <span className="text-sm text-muted-foreground">Application ID:</span>
                       <span className="text-sm font-medium">{selectedLoanDetail.id}</span>
                     </div>
                     <div className="flex justify-between">
@@ -566,16 +523,6 @@ export default function DelinquencyReviewPage() {
                     <div className="flex justify-between">
                       <span className="text-sm text-muted-foreground">Amount:</span>
                       <span className="text-sm font-medium">${selectedLoanDetail.amount.toLocaleString()}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground">Days Late:</span>
-                      <span className={`text-sm font-medium ${getDaysLateColor(selectedLoanDetail.daysLate)}`}>
-                        {selectedLoanDetail.daysLate} days
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground">Missed Payments:</span>
-                      <span className="text-sm font-medium">{selectedLoanDetail.missedPayments}</span>
                     </div>
                   </div>
                 </div>
@@ -594,20 +541,6 @@ export default function DelinquencyReviewPage() {
                       <span className="text-sm text-muted-foreground">Credit Score:</span>
                       <span className="text-sm font-medium">{selectedLoanDetail.creditScore}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground">Risk Level:</span>
-                      <span
-                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getRiskLevelColor(
-                          selectedLoanDetail.riskLevel,
-                        )}`}
-                      >
-                        {selectedLoanDetail.riskLevel}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground">Last Contact:</span>
-                      <span className="text-sm font-medium">{selectedLoanDetail.lastContact}</span>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -618,39 +551,9 @@ export default function DelinquencyReviewPage() {
                   <p className="text-sm">Next Action: {selectedLoanDetail.nextAction}</p>
                 </div>
               </div>
-
-              <div className="space-y-2">
-                <h3 className="text-sm font-medium">Contact History</h3>
-                <div className="rounded-md border p-3 space-y-2">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <p className="text-sm font-medium">Phone Call</p>
-                      <p className="text-xs text-muted-foreground">
-                        Discussed payment options and promised to pay by end of week
-                      </p>
-                    </div>
-                    <span className="text-xs text-muted-foreground">3 days ago</span>
-                  </div>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <p className="text-sm font-medium">Email</p>
-                      <p className="text-xs text-muted-foreground">Sent payment reminder and late fee notification</p>
-                    </div>
-                    <span className="text-xs text-muted-foreground">1 week ago</span>
-                  </div>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <p className="text-sm font-medium">SMS</p>
-                      <p className="text-xs text-muted-foreground">Automated payment reminder sent</p>
-                    </div>
-                    <span className="text-xs text-muted-foreground">2 weeks ago</span>
-                  </div>
-                </div>
-              </div>
-
               <div className="space-y-2">
                 <h3 className="text-sm font-medium">Add Note</h3>
-                <Textarea placeholder="Add a note about this delinquent loan..." rows={2} />
+                <Textarea placeholder="Add a note about this loan application..." rows={2} />
               </div>
             </div>
           )}
@@ -672,7 +575,7 @@ export default function DelinquencyReviewPage() {
               onClick={() => {
                 toast({
                   title: "Note Added",
-                  description: "Your note has been added to the loan record.",
+                  description: "Your note has been added to the application.",
                 })
                 setIsDetailViewOpen(false)
               }}

@@ -73,7 +73,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
    // { href: "/dashboard/analytics", label: "Analytics", icon: BarChart3 },
     { href: "/dashboard/filing-reporting", label: "Risk Ops", icon: Briefcase },
     { href: "/dashboard/underwriting", label: "Underwriting", icon: Shield },
-    { href: "/dashboard/reviews", label: "Manual Review", icon: Eye },
+    { href: "/dashboard/manual-reviews", label: "Manual Review", icon: Eye },
     { href: "/dashboard/admin", label: "Admin Console", icon: Settings },
   ]
 
