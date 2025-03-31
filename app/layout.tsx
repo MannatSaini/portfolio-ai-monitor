@@ -27,7 +27,12 @@ export default function RootLayout({
         <Toaster />
         <AIProvider initialDebugMode={false}>{children}</AIProvider>
         </AuthProvider>
+        <footer className="bg-gray-800 text-white py-1 text-center">
+          <p>&copy; {new Date().getFullYear()} Glegs. All rights reserved.</p>
+        </footer>
+      
       </body>
+
     </html>
   )
 }
