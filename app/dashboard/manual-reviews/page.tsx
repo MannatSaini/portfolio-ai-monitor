@@ -136,7 +136,7 @@ export default function DelinquencyReviewPage() {
   const handleSendEmail = () => {
     toast({
       title: "Report Shared",
-      description: `Delinquency report for ${selectedLoans.length} loans has been sent via email.`,
+      description: `Application for ${selectedLoans.length} loans has been sent via email.`,
     })
     setIsShareModalOpen(false)
   }
@@ -144,7 +144,7 @@ export default function DelinquencyReviewPage() {
   const handleSendToSlack = () => {
     toast({
       title: "Report Shared",
-      description: `Delinquency report for ${selectedLoans.length} loans has been sent to Slack.`,
+      description: `Application for ${selectedLoans.length} loans has been sent to Slack.`,
     })
     setIsShareModalOpen(false)
   }
@@ -152,7 +152,7 @@ export default function DelinquencyReviewPage() {
   const handleCreateTicket = () => {
     toast({
       title: "Jira Ticket Created",
-      description: `Jira ticket has been created for ${selectedLoans.length} delinquent loans.`,
+      description: `Jira ticket has been created for ${selectedLoans.length}`,
     })
     setIsJiraModalOpen(false)
   }
@@ -321,10 +321,7 @@ export default function DelinquencyReviewPage() {
       <Dialog open={isShareModalOpen} onOpenChange={setIsShareModalOpen}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
-            <DialogTitle>Share Delinquency Report</DialogTitle>
-            <DialogDescription>
-              Share the delinquency report for {selectedLoans.length} selected loans.
-            </DialogDescription>
+            <DialogTitle>Share</DialogTitle>
           </DialogHeader>
           <Tabs defaultValue="email" onValueChange={(value) => setShareOption(value)}>
             <TabsList className="grid w-full grid-cols-2">
@@ -346,7 +343,7 @@ export default function DelinquencyReviewPage() {
                 <Label htmlFor="subject">Subject</Label>
                 <Input
                   id="subject"
-                  defaultValue={`Delinquency Report - ${selectedLoans.length} Loans - ${new Date().toLocaleDateString()}`}
+                  defaultValue={`Review applications - ${selectedLoans.length} : ${new Date().toLocaleDateString()}`}
                 />
               </div>
               <div className="space-y-2">
@@ -354,7 +351,7 @@ export default function DelinquencyReviewPage() {
                 <Textarea
                   id="message"
                   placeholder="Add a message..."
-                  defaultValue={`Please review the attached application for ${selectedLoans.length} loans that require attention.`}
+                  defaultValue={`Please review the attached application  ${selectedLoans.length}`}
                   rows={4}
                 />
               </div>
@@ -364,19 +361,19 @@ export default function DelinquencyReviewPage() {
                   htmlFor="include-details"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Include detailed loan information
+                  Include detailed application information
                 </label>
               </div>
             </TabsContent>
             <TabsContent value="slack" className="space-y-4 mt-4">
               <div className="space-y-2">
                 <Label htmlFor="channel">Slack Channel</Label>
-                <Select defaultValue="delinquency-alerts">
+                <Select defaultValue="Manual Approval">
                   <SelectTrigger>
                     <SelectValue placeholder="Select channel" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="delinquency-alerts">#delinquency-alerts</SelectItem>
+                    <SelectItem value="delinquency-alerts">#manual-approval</SelectItem>
                     <SelectItem value="loan-portfolio">#loan-portfolio</SelectItem>
                     <SelectItem value="risk-management">#risk-management</SelectItem>
                   </SelectContent>
@@ -387,7 +384,7 @@ export default function DelinquencyReviewPage() {
                 <Textarea
                   id="slack-message"
                   placeholder="Add a message..."
-                  defaultValue={`@channel Please review the delinquency report for ${selectedLoans.length} loans that require attention.`}
+                  defaultValue={`@channel Please review the application for ${selectedLoans.length}.`}
                   rows={4}
                 />
               </div>
@@ -397,7 +394,7 @@ export default function DelinquencyReviewPage() {
                   htmlFor="include-details-slack"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Include detailed loan information
+                  Include detailed application information
                 </label>
               </div>
             </TabsContent>
@@ -419,7 +416,7 @@ export default function DelinquencyReviewPage() {
           <DialogHeader>
             <DialogTitle>Create Jira Ticket</DialogTitle>
             <DialogDescription>
-              Create a Jira ticket for {selectedLoans.length} selected delinquent loans.
+              Create a Jira ticket for {selectedLoans.length} selected application.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">

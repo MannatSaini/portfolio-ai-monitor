@@ -13,18 +13,29 @@ export default function SocureVerificationUI() {
     <div className="flex min-h-screen bg-gray-50">
       {/* Left side - Workflow diagram */}
       <div className="flex-1 p-4 relative">
-        <div className="absolute inset-0 bg-[radial-gradient(#e0e0e0_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(#e0e0e0_1px,transparent_1px)] bg-[size:10px_10px]"></div>
         <div className="relative flex flex-col items-center pt-16 space-y-8">
-          {/* Top buttons */}
-          <div className="flex w-full max-w-md justify-between mb-4">
-            <button className="bg-white rounded-full px-6 py-2 shadow-sm border">Select</button>
-            <button className="bg-white rounded-full px-6 py-2 shadow-sm border">Continue evaluation</button>
+          {/* Vertical line */}
+          <div className="absolute h-96 w-3.5 bg-gray-500 top-32 z-0"></div>
+
+         {/* User Input Node */}
+          <div className="z-10 w-full max-w-md">
+            <div className="border border-blue-300 rounded-lg bg-white p-4 shadow-sm">
+              <div className="flex items-center gap-2">
+                <div className="text-green-500">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zN2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                  </svg>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-500">User Input</div>
+                  <div className="font-medium">Take User Input for KYC</div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Vertical line */}
-          <div className="absolute h-full w-0.5 bg-gray-200 top-32 z-0"></div>
-
-          {/* Socure report node */}
+          {/* Credit bureau Node */}
           <div className="z-10 w-full max-w-md">
             <div className="border border-blue-300 rounded-lg bg-white p-4 shadow-sm">
               <div className="flex items-center gap-2">
@@ -35,15 +46,15 @@ export default function SocureVerificationUI() {
                 </div>
                 <div>
                   <div className="text-sm text-gray-500">Credit Bureau</div>
-                  <div className="font-medium">Pull Credit Bureau report</div>
+                  <div className="font-medium">Fetch Credit Bureau</div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Calculate AML Flags node */}
+          {/* Evaluate credit eligibilty node */}
           <div className="z-10 w-full max-w-md">
-            <div className="border border-gray-200 rounded-lg bg-white p-4 shadow-sm">
+            <div className="border border-blue-200 rounded-lg bg-white p-4 shadow-sm">
               <div className="flex items-center gap-2">
                 <div className="bg-pink-100 text-pink-500 p-1 rounded">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -52,13 +63,13 @@ export default function SocureVerificationUI() {
                 </div>
                 <div>
                   <div className="text-sm text-gray-500">Underwriting</div>
-                  <div className="font-medium">Calculate credit eligibilty</div>
+                  <div className="font-medium">Evaluate credit eligibilty</div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Needs manual review node */}
+          {/* EDD node 
           <div className="z-10 w-full max-w-md">
             <div className="border border-gray-200 rounded-lg bg-white p-4 shadow-sm">
               <div className="flex items-center gap-2">
@@ -68,18 +79,18 @@ export default function SocureVerificationUI() {
                   </svg>
                 </div>
                 <div>
-                  <div className="text-sm text-gray-500">Split</div>
-                  <div className="font-medium">Needs manual review?</div>
+                  <div className="text-sm text-gray-500">EDD</div>
+                  <div className="font-medium">Liveliness check</div>
                 </div>
               </div>
             </div>
-          </div>
+          </div>*/}
 
-          {/* Decision buttons */}
+          {/* Decision buttons 
           <div className="z-10 w-full max-w-md flex justify-between">
-            <button className="bg-white rounded-full px-6 py-2 shadow-sm border">Manual review</button>
+            <button className="bg-white rectan-full px-6 py-2 shadow-sm border">Manual review</button>
             <button className="bg-white rounded-full px-6 py-2 shadow-sm border">Continue</button>
-          </div>
+          </div>*/}
 
           {/* Manual review screening node */}
           <div className="z-10 w-full max-w-md">
@@ -93,7 +104,7 @@ export default function SocureVerificationUI() {
                 </div>
                 <div>
                   <div className="text-sm text-gray-500">Manual Review</div>
-                  <div className="font-medium">Manual review screening hits</div>
+                  <div className="font-medium">Manual review of application</div>
                 </div>
               </div>
             </div>
@@ -125,8 +136,8 @@ export default function SocureVerificationUI() {
               </svg>
             </div>
             <div>
-              <div className="text-sm text-gray-500">Credit Approval • Premium bundle</div>
-              <div className="font-medium">Pull Credit bureau report</div>
+              <div className="text-sm text-gray-500">Credit Approval flow</div>
+              <div className="font-medium">Consumer durable loans</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -162,7 +173,7 @@ export default function SocureVerificationUI() {
               className="w-full p-3 flex items-center justify-between"
               onClick={() => setIsConfigExpanded(!isConfigExpanded)}
             >
-              <span className="font-medium">Configure API request</span>
+              <span className="font-medium">Configure Approval criteria</span>
               <ChevronDown
                 size={20}
                 className={cn("transition-transform", isConfigExpanded ? "transform rotate-180" : "")}
@@ -175,6 +186,8 @@ export default function SocureVerificationUI() {
                   { label: "Credit Score", field: "620" },
                   { label: "Debt-to-income", field: "43%" },
                   { label: "Loan-to-Value", field: "80%" },
+                  { label: "Delayed-Payment", field: "" },
+                  { label: "Employment-Years", field: "" },
                 ].map((item) => (
                   <div key={item.label} className="grid grid-cols-[180px_1fr] gap-4 items-center">
                     <div className="flex items-center gap-1">
