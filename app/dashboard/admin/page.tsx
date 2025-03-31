@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Settings, Users, Bell, Shield, Database, Lock, Globe, Cpu, BarChart3, Sliders, CreditCard,CheckCircle } from "lucide-react"
+import { Tickets,Ticket,TicketCheck,Settings, Users, Bell, Shield, Database, Lock, Globe, Cpu, BarChart3, Sliders, CreditCard,CheckCircle } from "lucide-react"
 import { useToast } from "@/components/ui/use-toast"
 
 export default function AdminConsolePage() {
@@ -31,50 +31,37 @@ export default function AdminConsolePage() {
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold tracking-tight">Admin Console</h1>
         <p className="text-muted-foreground">
-          Manage system settings, users, and AI configuration for loan portfolio monitoring.
+          Review all the actions and  configurations
         </p>
       </div>
 
       {/* Admin Overview */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Total Tickets</CardTitle>
+            <Tickets className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">248</div>
-            <p className="text-xs text-muted-foreground">+5 this week</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Alerts</CardTitle>
-            <Bell className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Open Tickets</CardTitle>
+            <Ticket className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">18</div>
-            <p className="text-xs text-muted-foreground">System-wide</p>
+            <div className="text-2xl font-bold">158</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">AI Model Status</CardTitle>
-            <Cpu className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">In-Progress Tickets</CardTitle>
+            <TicketCheck className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{aiModelStatus}</div>
-            <p className="text-xs text-muted-foreground">Last trained: 3 days ago</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">System Health</CardTitle>
-            <Shield className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">Good</div>
-            <p className="text-xs text-muted-foreground">All systems operational</p>
+            <div className="text-2xl font-bold">73</div>
           </CardContent>
         </Card>
       </div>
@@ -130,7 +117,7 @@ export default function AdminConsolePage() {
           </CardContent>
         </Card>
 
-        {/* System Settings */}
+        {/* System Settings 
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
@@ -159,7 +146,7 @@ export default function AdminConsolePage() {
               </Button>
             </div>
           </CardContent>
-        </Card>
+        </Card>*/}
 
         {/* Alert Configuration */}
         <Card>
@@ -192,47 +179,9 @@ export default function AdminConsolePage() {
             <Button>Configure Alert Settings</Button>
           </CardContent>
         </Card>
-
-        {/* System Logs */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Shield className="mr-2 h-5 w-5" />
-              System Logs
-            </CardTitle>
-            <CardDescription>View system activity and error logs</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="h-[200px] overflow-auto rounded-md border p-4 text-sm">
-              <div className="space-y-2">
-                <div>
-                  <span className="text-muted-foreground">[2023-09-01 14:32:15]</span> Loan portfolio AI model updated
-                  to version 2.4.1
-                </div>
-                <div>
-                  <span className="text-muted-foreground">[2023-09-01 12:15:03]</span> Credit bureau API integration
-                  refreshed
-                </div>
-                <div>
-                  <span className="text-muted-foreground">[2023-09-01 10:05:47]</span> New underwriter added:
-                  sarah.johnson@example.com
-                </div>
-                <div>
-                  <span className="text-muted-foreground">[2023-09-01 09:12:33]</span> Risk threshold updated for
-                  unsecured loans
-                </div>
-                <div>
-                  <span className="text-muted-foreground">[2023-08-31 18:45:22]</span> Loan database optimization
-                  completed
-                </div>
-              </div>
-            </div>
-            <Button variant="outline">View All Logs</Button>
-          </CardContent>
-        </Card>
       </div>
 
-      {/* Integration Settings */}
+      {/* Integration Settings 
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
@@ -241,7 +190,7 @@ export default function AdminConsolePage() {
           </CardTitle>
           <CardDescription>Manage data integration</CardDescription>
         </CardHeader>
-      </Card>
+      </Card>*/}
       {/* Credit Bureau Integration */}
       <Card>
         <CardHeader>
@@ -347,6 +296,45 @@ export default function AdminConsolePage() {
           </div>
         </CardContent>
       </Card>
+      <div>
+         {/* System Logs */}
+         <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Shield className="mr-2 h-5 w-5" />
+              System Logs
+            </CardTitle>
+            <CardDescription>View system activity and error logs</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="h-[200px] overflow-auto rounded-md border p-4 text-sm">
+              <div className="space-y-2">
+                <div>
+                  <span className="text-muted-foreground">[2023-09-01 14:32:15]</span> Loan portfolio AI model updated
+                  to version 2.4.1
+                </div>
+                <div>
+                  <span className="text-muted-foreground">[2023-09-01 12:15:03]</span> Credit bureau API integration
+                  refreshed
+                </div>
+                <div>
+                  <span className="text-muted-foreground">[2023-09-01 10:05:47]</span> New underwriter added:
+                  sarah.johnson@example.com
+                </div>
+                <div>
+                  <span className="text-muted-foreground">[2023-09-01 09:12:33]</span> Risk threshold updated for
+                  unsecured loans
+                </div>
+                <div>
+                  <span className="text-muted-foreground">[2023-08-31 18:45:22]</span> Loan database optimization
+                  completed
+                </div>
+              </div>
+            </div>
+            <Button variant="outline">View All Logs</Button>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }

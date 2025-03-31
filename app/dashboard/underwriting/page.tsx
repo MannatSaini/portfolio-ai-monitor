@@ -15,8 +15,14 @@ import {
   ShoppingBag,
   Lock,
 } from "lucide-react"
+import { useState } from "react";
 
 export default function UnderwritingPage() {
+  const [approvalRateToggle, setApprovalRateToggle] = useState(true);
+  const [creditLossesToggle, setCreditLossesToggle] = useState(true);
+  const [interestRateMarginToggle, setInterestMarginToggle] = useState(false);
+  
+
   const router = useRouter()
   return (
     <div className="space-y-6">
@@ -225,6 +231,7 @@ export default function UnderwritingPage() {
 
       {/* AI Underwriting Recommendations */}
       <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950 border-blue-200 dark:border-blue-800">
+
         <CardHeader>
           <CardTitle className="flex items-center">
             <Shield className="mr-2 h-5 w-5 text-primary" />
@@ -234,7 +241,54 @@ export default function UnderwritingPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <div className="rounded-lg border bg-white dark:bg-gray-900 p-4">
+                  <div className="grid gap-4 md:grid-cols-3">
+                    <div className="p-4 flex items-center justify-between border rounded-lg">
+                      <span className="text-gray-800 font-medium">Approval Rate</span>
+                      <div
+                        className={`w-12 h-6 rounded-full relative cursor-pointer ${
+                          approvalRateToggle ? "bg-teal-400" : "bg-gray-200"
+                        }`}
+                        onClick={() => setApprovalRateToggle(!approvalRateToggle)}
+                      >
+                        <div
+                          className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${
+                            approvalRateToggle ? "translate-x-6" : "translate-x-0.5"
+                          }`}
+                        ></div>
+                      </div>
+                    </div>
+                    <div className="p-4 flex items-center justify-between border rounded-lg">
+                      <span className="text-gray-800 font-medium">Deliquency Rate</span>
+                      <div
+                        className={`w-12 h-6 rounded-full relative cursor-pointer ${
+                          creditLossesToggle ? "bg-teal-400" : "bg-gray-200"
+                        }`}
+                        onClick={() => setCreditLossesToggle(!creditLossesToggle)}
+                      >
+                        <div
+                          className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${
+                            creditLossesToggle ? "translate-x-6" : "translate-x-0.5"
+                          }`}
+                        ></div>
+                      </div>
+                    </div>
+                    <div className="p-4 flex items-center justify-between border rounded-lg">
+                      <span className="text-gray-800 font-medium">Interest Margin</span>
+                      <div
+                        className={`w-12 h-6 rounded-full relative cursor-pointer ${
+                          interestRateMarginToggle ? "bg-teal-400" : "bg-gray-200"
+                        }`}
+                        onClick={() => setApprovalRateToggle(!interestRateMarginToggle)} // Kept purposely to avoid toggling during the DEMO
+                      >
+                        <div
+                          className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${
+                            interestRateMarginToggle ? "translate-x-6" : "translate-x-0.5"
+                          }`}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+         {/*   <div className="rounded-lg border bg-white dark:bg-gray-900 p-4">
               <h3 className="font-medium mb-2">Housing Loans</h3>
               <p className="text-sm text-muted-foreground mb-2">
                 Based on recent performance data, consider adjusting the following:
@@ -245,7 +299,7 @@ export default function UnderwritingPage() {
                 <li>Implement stricter income verification for self-employed applicants</li>
               </ul>
               <p className="text-sm text-primary mt-2">Projected impact: -0.8% approval rate, -1.2% delinquency rate</p>
-            </div>
+            </div>*/}
 
             <div className="rounded-lg border bg-white dark:bg-gray-900 p-4">
               <h3 className="font-medium mb-2">Unsecured Loans</h3>
