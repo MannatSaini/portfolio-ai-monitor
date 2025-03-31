@@ -112,10 +112,10 @@ export default function ReportsPage() {
             <div className="rounded-md border p-4 bg-white dark:bg-gray-900" >
               <h3 className="font-medium mb-2">Example prompts:</h3>
               <ul className="text-sm space-y-2 text-muted-foreground">
-                <li>• "Analyze delinquency risk factors for unsecured loans in the 25-35 age group"</li>
-                <li>• "Generate a insight on credit score trends across different loan types"</li>
-                <li>• "Create a housing loan performance analysis with recommendations"</li>
-                <li>• "Analyze the effectiveness of current underwriting criteria for consumer durables"</li>
+                <li>• "What are the trends in the First payment default in the Auto Loans in the state of Ohio?"</li>
+                <li>• "Analyse the recovery rates for later delinquency buckets in un-secured loans across different income segments."</li>
+                <li>• "Distribute mortgage loans into multiple cohorts in decreasing order of NIM less charge-off"</li>
+                <li>• "Generate insights on credit score trends across different loan segments"</li>
               </ul>
             </div>
           </div>
