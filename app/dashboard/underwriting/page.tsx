@@ -118,7 +118,7 @@ export default function UnderwritingPage() {
                   </div>
                 </div>
               </div>
-              <Button variant="outline" size="sm" className="mt-4" onClick={() => router.push("/dashboard/create-rules")}>
+              <Button variant="outline" size="sm" className="mt-4" onClick={() => router.push("/dashboard/edit-rules")}>
                 <Settings className="mr-2 h-4 w-4" />
                 Adjust Criteria
               </Button>

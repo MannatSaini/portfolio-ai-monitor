@@ -17,6 +17,9 @@ export default function SocureVerificationUI() {
       <div className="flex-1 p-4 relative">
         <div className="absolute inset-0 bg-[radial-gradient(#e0e0e0_1px,transparent_1px)] bg-[size:10px_10px]"></div>
         <div className="relative flex flex-col items-center pt-16 space-y-8">
+          {/* Vertical line */}
+          <div className="absolute h-96 w-3.5 bg-gray-500 top-32 z-0"></div>
+
          {/* User Input Node */}
           <div className="z-10 w-full max-w-md">
             <div className="border border-blue-300 rounded-lg bg-white p-4 shadow-sm">
@@ -27,14 +30,88 @@ export default function SocureVerificationUI() {
                   </svg>
                 </div>
                 <div>
-                  <div className="text-sm text-gray-500">Define Node</div>
-                  <div className="font-medium">Start defining the rule</div>
+                  <div className="text-sm text-gray-500">User Input</div>
+                  <div className="font-medium">Take User Input for KYC</div>
                 </div>
               </div>
             </div>
           </div>
 
-          
+          {/* Credit bureau Node */}
+          <div className="z-10 w-full max-w-md">
+            <div className="border border-blue-300 rounded-lg bg-white p-4 shadow-sm">
+              <div className="flex items-center gap-2">
+                <div className="text-orange-500">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                  </svg>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-500">Credit Bureau</div>
+                  <div className="font-medium">Fetch Credit Bureau</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Evaluate credit eligibilty node */}
+          <div className="z-10 w-full max-w-md">
+            <div className="border border-blue-200 rounded-lg bg-white p-4 shadow-sm">
+              <div className="flex items-center gap-2">
+                <div className="bg-pink-100 text-pink-500 p-1 rounded">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  </svg>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-500">Underwriting</div>
+                  <div className="font-medium">Evaluate credit eligibilty</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* EDD node 
+          <div className="z-10 w-full max-w-md">
+            <div className="border border-gray-200 rounded-lg bg-white p-4 shadow-sm">
+              <div className="flex items-center gap-2">
+                <div className="bg-blue-100 text-blue-500 p-1 rounded">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M16 3H8C6.9 3 6 3.9 6 5V19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V5C18 3.9 17.1 3 16 3ZM14 17H10V15H14V17ZM14 13H10V11H14V13ZM14 9H10V7H14V9Z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-500">EDD</div>
+                  <div className="font-medium">Liveliness check</div>
+                </div>
+              </div>
+            </div>
+          </div>*/}
+
+          {/* Decision buttons 
+          <div className="z-10 w-full max-w-md flex justify-between">
+            <button className="bg-white rectan-full px-6 py-2 shadow-sm border">Manual review</button>
+            <button className="bg-white rounded-full px-6 py-2 shadow-sm border">Continue</button>
+          </div>*/}
+
+          {/* Manual review screening node */}
+          <div className="z-10 w-full max-w-md">
+            <div className="border border-gray-200 rounded-lg bg-white p-4 shadow-sm">
+              <div className="flex items-center gap-2">
+                <div className="bg-gray-100 text-gray-500 p-1 rounded-full">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 6v6l4 2"></path>
+                  </svg>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-500">Manual Review</div>
+                  <div className="font-medium">Manual review of application</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Zoom controls */}
           <div className="absolute bottom-4 right-4 flex items-center gap-2 bg-white rounded-md shadow-sm border p-1">
             <button className="p-1">
@@ -62,7 +139,7 @@ export default function SocureVerificationUI() {
             </div>
             <div>
               <div className="text-sm text-gray-500">Credit Approval flow</div>
-              <div className="font-medium">Define the product type</div>
+              <div className="font-medium">Consumer durable loans</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -111,9 +188,9 @@ export default function SocureVerificationUI() {
             {isConfigExpanded && (
               <div className="p-4 pt-0 space-y-4">
                 {[
-                  { label: "Credit Score", field: "" },
-                  { label: "Debt-to-income", field: "" },
-                  { label: "Loan-to-Value", field: "" },
+                  { label: "Credit Score", field: "620" },
+                  { label: "Debt-to-income", field: "43%" },
+                  { label: "Loan-to-Value", field: "80%" },
                   { label: "Delayed-Payment", field: "" },
                   { label: "Employment-Years", field: "" },
                 ].map((item) => (

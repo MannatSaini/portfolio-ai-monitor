@@ -52,6 +52,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
+  useEffect(() => {
+    const updateNavIcons = () => {
+      const navItems = document.querySelectorAll(".nav-item-icon")
+    }
+
+    updateNavIcons()
+  }, [isSidebarOpen])
+
   // Handle dark mode toggle
   useEffect(() => {
     if (isDarkMode) {
@@ -67,10 +75,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: Home },
-    //{ href: "/dashboard/loan-portfolio", label: "Loan Portfolio", icon: Briefcase },
     { href: "/dashboard/insights", label: "Insights", icon: FileText },
     { href: "/dashboard/alerts", label: "Risk Alerts", icon: Bell },
-   // { href: "/dashboard/analytics", label: "Analytics", icon: BarChart3 },
     { href: "/dashboard/filing-reporting", label: "Risk Ops", icon: Briefcase },
     { href: "/dashboard/underwriting", label: "Underwriting", icon: Shield },
     { href: "/dashboard/manual-reviews", label: "Manual Review", icon: Eye },
@@ -82,13 +88,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-70 transform bg-card transition-transform duration-300 ease-in-out md:relative md:translate-x-0",
-          isSidebarOpen ? "w-64" : "w-16",
+          "fixed inset-y-0 left-0 z-50 transform bg-card transition-transform duration-300 ease-in-out md:relative md:translate-x-0",
+          isSidebarOpen ? "w-64" : "w-28",
         )}
       >
-        <div className="flex h-full flex-col ">
+        <div className="flex h-full flex-col">
           <div className="flex h-16 items-center justify-between px-4 border-b">
-            <Link href="/dashboard" className="flex items-center space-x-2">
             <Button
               variant="outline"
               size="icon"
@@ -98,7 +103,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <PanelLeft className="h-4 w-4" />
               <span className="sr-only">Toggle Sidebar</span>
             </Button>
-            <TeamSwitcher />
+            <Link href="/dashboard" className="flex items-center space-x-2">
+              <TeamSwitcher />
             </Link>
             <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(false)} className="md:hidden">
               <X className="h-5 w-5" />
@@ -122,7 +128,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                       )}
                     >
                       <Icon className="mr-3 h-5 w-5" />
-                      {item.label}
+                      {isSidebarOpen && item.label}
                     </Link>
                   </li>
                 )
@@ -147,7 +153,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="md:hidden">
             <Menu className="h-5 w-5" />
           </Button>
-          <div className="ml-auto flex items-center space-x-4" >
+          <div className="ml-auto flex items-center space-x-4">
             <div className="relative h-8 w-8 rounded-full bg-primary">
               <span className="absolute inset-0 flex items-center justify-center text-xs font-medium text-primary-foreground">
                 <UserNav />
