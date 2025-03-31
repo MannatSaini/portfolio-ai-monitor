@@ -46,14 +46,14 @@ export function ChartVisualizer() {
           </Select>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium">Data Source:</span>
+          <span className="text-sm font-medium">Metrics:</span>
           <Select defaultValue="delinquency">
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select data source" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="delinquency">Delinquency Data</SelectItem>
-              <SelectItem value="underwriting">Underwriting Data</SelectItem>
+              <SelectItem value="delinquency">Delinquency </SelectItem>
+              <SelectItem value="underwriting">Underwriting </SelectItem>
             </SelectContent>
           </Select>
         </div>
