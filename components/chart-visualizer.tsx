@@ -11,10 +11,11 @@ import { UnderwritingPerformanceChart } from "@/components/underwriting-performa
 
 export function ChartVisualizer() {
   const [chartType, setChartType] = useState("line")
+  const [chartValue, setChartvalue] = useState("DelinquencyChart")
   const [summaryGenerated, setSummaryGenerated] = useState(false)
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium">Chart Type:</span>
@@ -35,12 +36,12 @@ export function ChartVisualizer() {
                   <span>Bar Chart</span>
                 </div>
               </SelectItem>
-              <SelectItem value="pie">
+             {/* <SelectItem value="pie">
                 <div className="flex items-center gap-2">
                   <PieChart className="h-4 w-4" />
                   <span>Pie Chart</span>
                 </div>
-              </SelectItem>
+              </SelectItem> */}
             </SelectContent>
           </Select>
         </div>
@@ -53,7 +54,6 @@ export function ChartVisualizer() {
             <SelectContent>
               <SelectItem value="delinquency">Delinquency Data</SelectItem>
               <SelectItem value="underwriting">Underwriting Data</SelectItem>
-              <SelectItem value="custom">Custom Data</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -63,21 +63,20 @@ export function ChartVisualizer() {
         </Button>
       </div>
 
-      <div className="rounded-lg border p-4">
+      <div className="rounded-lg border p-4 ">
         {chartType === "line" && <DelinquencyChart />}
         {chartType === "bar" && <UnderwritingPerformanceChart />}
-        {chartType === "pie" && <DelinquencyChart />}
       </div>
 
       <div className="flex items-center gap-2">
-        <Button variant="outline" size="sm">
+        {/*<Button variant="outline" size="sm">
           <Download className="mr-2 h-4 w-4" />
           Export Chart
         </Button>
         <Button variant="outline" size="sm">
           <Copy className="mr-2 h-4 w-4" />
           Copy to Clipboard
-        </Button>
+        </Button> */}
         <Button size="sm" onClick={() => setSummaryGenerated(true)}>
           <MessageSquare className="mr-2 h-4 w-4" />
           Generate Summary
@@ -92,16 +91,6 @@ export function ChartVisualizer() {
             value="The chart shows a clear trend of increasing delinquency rates across all loan types over the past 7 months. Personal loans show the highest rate of increase, rising from 3.2% in January to 5.2% in July, representing a 62.5% increase. Business loans have the highest absolute delinquency rate at 6.1% in July. Mortgages maintain the lowest delinquency rates throughout the period, staying below 2%, which is consistent with their typically lower risk profile. The acceleration in delinquency rates appears to have increased in the April-July period, suggesting a potential systemic issue that warrants further investigation."
             readOnly
           />
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm">
-              <Copy className="mr-2 h-4 w-4" />
-              Copy Summary
-            </Button>
-            <Button variant="outline" size="sm">
-              <Download className="mr-2 h-4 w-4" />
-              Export Summary
-            </Button>
-          </div>
         </div>
       )}
     </div>

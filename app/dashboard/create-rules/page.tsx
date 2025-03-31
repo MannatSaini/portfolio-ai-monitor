@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { ChevronDown, Info, Maximize2, Minus, Plus, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -8,6 +9,7 @@ export default function SocureVerificationUI() {
   const [activeTab, setActiveTab] = useState("logic")
   const [isConfigExpanded, setIsConfigExpanded] = useState(true)
   const [zoomLevel, setZoomLevel] = useState(95)
+  const router = useRouter()
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -144,7 +146,10 @@ export default function SocureVerificationUI() {
             <button className="text-gray-400 hover:text-gray-600">
               <Info size={18} />
             </button>
-            <button className="text-gray-400 hover:text-gray-600">
+            <button
+              className="text-gray-400 hover:text-gray-600"
+              onClick={() => router.push("/dashboard/underwriting")}
+            >
               <X size={18} />
             </button>
           </div>

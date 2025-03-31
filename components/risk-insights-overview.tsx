@@ -45,20 +45,20 @@ export default function RiskInsightsOverview() {
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Risk Insights Dashboard</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Overview</h1>
+          <h4 className="text tracking-tight">Your customised summary</h4>
         </div>
-
       </div>
 
-      <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList>
+      <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="space-y-2">
+      { /* <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="delinquency">Delinquency Analysis</TabsTrigger>
           <TabsTrigger value="underwriting">Underwriting Performance</TabsTrigger>
           <TabsTrigger value="collaboration">Collaboration</TabsTrigger>
-          { /*<TabsTrigger value="actions">Actions</TabsTrigger> 
-           <TabsTrigger value="integrations">Integrations</TabsTrigger> */}
-        </TabsList>
+          <TabsTrigger value="actions">Actions</TabsTrigger> 
+           <TabsTrigger value="integrations">Integrations</TabsTrigger> 
+        </TabsList> */}
 
         <TabsContent value="overview" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -114,17 +114,17 @@ export default function RiskInsightsOverview() {
             </Card>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-            <Card className="col-span-4">
+          <div className="grid gap-4 md:grid-cols-20 lg:grid-cols-20">
+            <Card className="col-span-20">
               <CardHeader>
-                <CardTitle>Delinquency by Loan Type</CardTitle>
-                <CardDescription>Monthly trend of delinquent loans across different loan categories</CardDescription>
+                <CardTitle>Performance</CardTitle>
               </CardHeader>
               <CardContent className="pl-2">
-                <DelinquencyChart />
+                { /*<DelinquencyChart /> */}
+                <ChartVisualizer />
               </CardContent>
             </Card>
-            <Card className="col-span-3">
+           {/* <Card className="col-span-3">
               <CardHeader>
                 <CardTitle>Underwriting Performance</CardTitle>
                 <CardDescription>Performance metrics for different customer segments</CardDescription>
@@ -132,7 +132,7 @@ export default function RiskInsightsOverview() {
               <CardContent>
                 <UnderwritingPerformanceChart />
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">

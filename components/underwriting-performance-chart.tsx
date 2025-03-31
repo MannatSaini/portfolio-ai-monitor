@@ -29,7 +29,7 @@ export function UnderwritingPerformanceChart() {
   }
 
   return (
-    <ChartContainer config={chartConfig} className="h-[300px]">
+    <ChartContainer config={chartConfig} className="h-[400px] w-[1320px]">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
