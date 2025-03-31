@@ -185,8 +185,8 @@ export function AIChat({ debugMode = false }: AIChatProps) {
               </AlertDescription>
             </Alert>
           ) : messages.length === 0 ? (
-            <div className="text-center text-muted-foreground py-6">
-              <p>Welcome to Elimentary.</p>
+            <div className="text-center text-muted-foreground font-semibold py-6">
+              <p>Welcome to Elimentary</p>
             </div>
           ) : (
             messages.map((message) => (
@@ -205,15 +205,6 @@ export function AIChat({ debugMode = false }: AIChatProps) {
             <div className="flex items-center justify-center py-2">
               <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
             </div>
-          )}
-          {error && (
-            <Alert variant="destructive" className="mt-4">
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>
-                {error.message || "An error occurred. Please try again."}
-              </AlertDescription>
-            </Alert>
           )}
         </CardContent>
 
