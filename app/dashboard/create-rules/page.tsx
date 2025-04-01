@@ -80,7 +80,7 @@ export default function SocureVerificationUI() {
 
         {/* Tabs */}
         <div className="flex border-b">
-          {["Logic", "Comments (0)"].map((tab) => (
+        {["Logic","Version","Mode", "Comments (0)"].map((tab) => (  
             <button
               key={tab}
               className={cn(
