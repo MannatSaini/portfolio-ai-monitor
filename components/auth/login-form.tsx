@@ -40,7 +40,7 @@ export function LoginForm() {
       if (user?.onboardingStatus === "completed") {
         router.push("/dashboard")
       } else {
-        router.push("/onboarding")
+        router.push("/dashboard")
       }
     } catch (error: any) {
       setError(error.message || "Login failed. Please try again.")
