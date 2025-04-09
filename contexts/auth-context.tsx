@@ -1,6 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
+import { NextResponse } from 'next/server'
 
 export type UserRole = "credit_analyst" | "chief_risk_officer" | "data_scientist"|  "data_engineer"| null
 export type OnboardingStatus = "not_started" | "in_progress" | "completed"
@@ -52,11 +53,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (email: string, password: string) => {
     setIsLoading(true)
     try {
-      const response = await fetch("/api/auth/login", {
+ /*     const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
-      })
+      })*/
+        
+        const response = NextResponse.json({
+          email,
+          password,
+        }, {
+          status: 200,
+        })
 
       if (!response.ok) {
         const error = await response.json()
@@ -76,14 +84,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = async (name: string, email: string, password: string) => {
     setIsLoading(true)
     try {
-      const response = await fetch("/api/auth/register", {
+    /*  const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
+      })*/
+      const response = NextResponse.json({
+        name,
+        email,
+        password,
+      }, {
+        status: 200,
       })
+      
       if (!response.ok) {
         const error = await response.json()
-        console.log("error :::::::::::::::::: "+response.text())
         throw new Error(error.message || "Registration failed")
       }
 
