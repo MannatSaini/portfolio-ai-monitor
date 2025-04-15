@@ -14,7 +14,7 @@ const data = [
   { month: "Jul", personal: 5.2, auto: 4.2, mortgage: 1.8, business: 6.1 },
 ]
 
-export function DelinquencyChart() {
+export function DelinquencyReviewLineChart() {
   const chartConfig = {
     personal: {
       label: "Personal Loans",
@@ -35,7 +35,7 @@ export function DelinquencyChart() {
   }
 
   return (
-    <ChartContainer config={chartConfig} className="h-[400px] w-[1320px]">
+    <ChartContainer config={chartConfig} className="h-[400px] w-[700px]">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
@@ -46,7 +46,7 @@ export function DelinquencyChart() {
           <Line type="monotone" dataKey="personal" stroke="var(--color-personal)" strokeWidth={3} />
           <Line type="monotone" dataKey="auto" stroke="var(--color-auto)" strokeWidth={3} />
           <Line type="monotone" dataKey="mortgage" stroke="var(--color-mortgage)" strokeWidth={3} />
-          <Line type="monotone" dataKey="business" stroke="var(--color-business)" strokeWidth={3} />
+          <Line type="monotone" dataKey="business" stroke="var(--color-business)" strokeWidth={4} />
         </LineChart>
       </ResponsiveContainer>
     </ChartContainer>
