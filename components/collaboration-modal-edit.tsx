@@ -11,6 +11,8 @@ import { MessageSquare, Users, Save, X, Share2, Send, Slack } from "lucide-react
 import { toast } from "@/components/ui/use-toast";
 import { ToastProvider } from "@/components/ui/toast";
 import { DialogTitle } from "@radix-ui/react-dialog"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { ChartVisualizerReview } from "@/components/chart-visualizer-review"
 
 interface CollaborationModalProps {
   open: boolean
@@ -128,34 +130,15 @@ export function CollaborationModal({
                   </li>
                 </ul>
                 <div className="h-6"></div>
-                <h2
-                  className="text-lg font-semibold text-gray-700"
-
-                >
-                  Analysis
-                </h2>
-                <p
-                  className="text-gray-600"
-
-                >
-                  The upward trend in delinquency rates suggests potential systemic issues. Factors such as changes in underwriting criteria, economic conditions, and marketing strategies may have contributed to this trend. Personal loans, in particular, require immediate attention due to their significant increase in delinquency rates.
-                </p>
-                <div className="h-6"></div>
-                <h2
-                  className="text-lg font-semibold text-gray-700"
-
-                >
-                  Recommendations
-                </h2>
-                <ol
-                  className="list-decimal pl-5 text-gray-600"
-
-                >
-                  <li>Conduct a thorough review of underwriting criteria for personal and business loans to identify potential gaps.</li>
-                  <li>Perform a detailed analysis of customer segments with the highest delinquency increases to uncover underlying causes.</li>
-                  <li>Evaluate the impact of recent marketing campaigns on loan quality and adjust strategies accordingly.</li>
-                  <li>Enhance risk models to incorporate the observed trends and improve predictive accuracy.</li>
-                </ol>
+                <div className="grid gap-4 md:grid-cols-20 lg:grid-cols-20">
+                  <Card className="col-span-20">
+                    <CardHeader>
+                    </CardHeader>
+                    <CardContent className="pl-2">
+                     <ChartVisualizerReview />
+                    </CardContent>
+                  </Card>
+                </div>
               </div>
             </div>
 
@@ -215,10 +198,10 @@ export function CollaborationModal({
                                 <div className="flex items-center gap-1">
                                   <span
                                     className={`h-2 w-2 rounded-full ${user.status === "active"
-                                        ? "bg-green-500"
-                                        : user.status === "idle"
-                                          ? "bg-yellow-500"
-                                          : "bg-gray-300"
+                                      ? "bg-green-500"
+                                      : user.status === "idle"
+                                        ? "bg-yellow-500"
+                                        : "bg-gray-300"
                                       }`}
                                   />
                                   <span className="text-xs text-gray-500">
