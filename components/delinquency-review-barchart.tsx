@@ -40,13 +40,13 @@ export function DelinquencyReviewBarChart() {
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="segment" />
-          <YAxis />
+          <YAxis label={{ value: "Delinquency Rate (%)", angle: -90, position: "insideLeft" }} />
           <ChartTooltip content={<ChartTooltipContent />} />
           <Legend />
-          <Bar dataKey="Jan" fill="var(--color-personal)" />
-          <Bar dataKey="Feb" fill="var(--color-auto)" />
-          <Bar dataKey="Mar" fill="var(--color-mortgage)" />
-          <Bar dataKey="Apr" fill="var(--color-business)" />
+          <Bar dataKey="personal" fill="var(--color-personal)" />
+          <Bar dataKey="auto" fill="var(--color-auto)" />
+          <Bar dataKey="mortgage" fill="var(--color-mortgage)" />
+          <Bar dataKey="business" fill="var(--color-business)" />
         </BarChart>
       </ResponsiveContainer>
     </ChartContainer>

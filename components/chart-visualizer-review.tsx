@@ -19,25 +19,25 @@ export function ChartVisualizerReview() {
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium">Chart Type:</span>
-          <Select defaultValue="line" onValueChange={setChartType}>
+            <Select defaultValue="line" onValueChange={(value) => setChartType(value)}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select chart type" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="line">
-                <div className="flex items-center gap-2">
-                  <LineChart className="h-4 w-4" />
-                  <span>Line Chart</span>
-                </div>
+              <div className="flex items-center gap-2">
+                <LineChart className="h-4 w-4" />
+                <span>Line Chart</span>
+              </div>
               </SelectItem>
-              {/* <SelectItem value="pie">
-                <div className="flex items-center gap-2">
-                  <PieChart className="h-4 w-4" />
-                  <span>Bar Chart</span>
-                </div>
-              </SelectItem>  */}
+              <SelectItem value="bar">
+              <div className="flex items-center gap-2">
+                <BarChart3 className="h-4 w-4" />
+                <span>Bar Chart</span>
+              </div>
+              </SelectItem>
             </SelectContent>
-          </Select>
+            </Select>
         </div>
       </div>
 
