@@ -10,6 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { MessageSquare, Users, Save, X, Share2, Send, Slack } from "lucide-react"
 import { toast } from "@/components/ui/use-toast";
 import { ToastProvider } from "@/components/ui/toast";
+import { CommentInput } from "@/components/comment-input";
 import { DialogTitle } from "@radix-ui/react-dialog"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartVisualizerReview } from "@/components/chart-visualizer-review"
@@ -29,6 +30,8 @@ export function CollaborationModal({
   initialContext = { type: "delinquency", title: "Delinquency Risk Analysis by Loan Type" },
 }: CollaborationModalProps) {
   const [title, setTitle] = useState(initialContext.title || "Untitled Analysis")
+  const [showCommentInput, setShowCommentInput] = useState(false);
+  const [commentContext, setCommentContext] = useState<string | null>(null);
 
   const handleShareToSlack = () => {
     // Add logic to share to Slack here
@@ -48,10 +51,10 @@ export function CollaborationModal({
   };
 
   const handleRightClick = (event: React.MouseEvent, context: string) => {
-    event.preventDefault();
-    prompt(`Add a comment`);
+    event.preventDefault(); // Prevent the default context menu
+    setShowCommentInput(true); // Show the comment input
+    setCommentContext(context); // Optionally set the context for the comment
   };
-
 
   const comments = [
     {
@@ -89,33 +92,15 @@ export function CollaborationModal({
           </DialogHeader>
           <div className="flex flex-1 overflow-hidden" onContextMenu={(e) => handleRightClick(e, "Report")}>
             {/* Main content area */}
-            <div
-              className="flex-1 overflow-auto p-6 bg-gray-50"
-
-            >
+            <div className="flex-1 overflow-auto p-6 bg-gray-50">
               <div className="prose prose-sm max-w-3xl mx-auto">
-                <h2
-                  className="text-lg font-semibold text-gray-700"
-                >
-                  Executive Summary
-                </h2>
-                <p
-                  className="text-gray-600"
-
-                >
+                <h2 className="text-lg font-semibold text-gray-700">Executive Summary</h2>
+                <p className="text-gray-600">
                   Delinquency rates have exhibited a notable upward trend, with personal loans experiencing the most significant increase. This trend raises concerns about potential systemic risks and necessitates immediate attention to mitigate further escalation.
                 </p>
                 <div className="h-6"></div>
-                <h2
-                  className="text-lg font-semibold text-gray-700"
-
-                >
-                  Key Findings
-                </h2>
-                <ul
-                  className="list-disc pl-5 text-gray-600"
-
-                >
+                <h2 className="text-lg font-semibold text-gray-700">Key Findings</h2>
+                <ul className="list-disc pl-5 text-gray-600">
                   <li>
                     <strong>Personal Loans:</strong> Delinquency rates increased from 3.2% in January to 5.2% in July, marking a 62.5% rise.
                   </li>
@@ -132,15 +117,32 @@ export function CollaborationModal({
                 <div className="h-6"></div>
                 <div className="grid gap-4 md:grid-cols-20 lg:grid-cols-20">
                   <Card className="col-span-20">
-                    <CardHeader>
-                    </CardHeader>
+                    <CardHeader></CardHeader>
                     <CardContent className="pl-2">
-                     <ChartVisualizerReview />
+                      <ChartVisualizerReview />
                     </CardContent>
                   </Card>
                 </div>
               </div>
             </div>
+
+            {/* Comment Input */}
+            {showCommentInput && (
+              <div className="fixed bottom-4 right-4 bg-white shadow-lg rounded-lg p-4">
+                <CommentInput
+                  onSubmit={handleExportToGoogleWorkspace}
+                  onAttach={handleExportToGoogleWorkspace}
+                  onMention={handleExportToGoogleWorkspace}
+                  className="mt-4"
+                />
+                <button
+                  className="mt-2 text-sm text-gray-500"
+                  onClick={() => setShowCommentInput(false)}
+                >
+                  Close
+                </button>
+              </div>
+            )}
 
             {/* Sidebar*/}
             <div className="w-72 border-l flex flex-col bg-gray-50">
@@ -256,17 +258,6 @@ export function CollaborationModal({
                 />
                 <span className="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
                   Invite Users
-                </span>
-              </div>
-              <div className="relative group">
-                <img
-                  src="/save.png"
-                  alt="Save Comments"
-                  className="h-8 w-8 cursor-pointer"
-                  onClick={handleExportToGoogleWorkspace}
-                />
-                <span className="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
-                  Save Comments
                 </span>
               </div>
             </div>
