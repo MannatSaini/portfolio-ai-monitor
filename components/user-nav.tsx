@@ -30,7 +30,7 @@ export function UserNav() {
         <DropdownMenuLabel className="font-normal px-4 py-2">
             <div className="flex flex-col space-y-1 bg-primary text-primary-foreground p-2 rounded-md">
             <p className="text-sm font-medium leading-none">Yogesh Gorjila</p>
-            <p className="text-xs leading-none text-primary-foreground/80">yg@glegs.com</p>
+            <p className="text-xs leading-none text-primary-foreground/80">yogesh@elimentary.com</p>
             </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="my-1 border-t border-border" />
