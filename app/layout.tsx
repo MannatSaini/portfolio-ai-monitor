@@ -10,7 +10,7 @@ import { AuthProvider } from "@/contexts/auth-context"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Glegs",
+  title: "Elimentary",
   description: "AI-powered risk platform",
     generator: 'MS'
 }
@@ -28,7 +28,7 @@ export default function RootLayout({
         <AIProvider initialDebugMode={false}>{children}</AIProvider>
         </AuthProvider>
         <footer className="bg-gray-800 text-white py-1 text-center">
-          <p>&copy; {new Date().getFullYear()} Glegs. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Elimentary. All rights reserved.</p>
         </footer>
       
       </body>

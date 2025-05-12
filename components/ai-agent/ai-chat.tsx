@@ -186,7 +186,7 @@ export function AIChat({ debugMode = false }: AIChatProps) {
             </Alert>
           ) : messages.length === 0 ? (
             <div className="text-center text-muted-foreground font-semibold py-6">
-              <p>Welcome to Glegs</p>
+              <p>Welcome to Elimentary</p>
             </div>
           ) : (
             messages.map((message) => (
