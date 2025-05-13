@@ -7,47 +7,47 @@ export function ReportHistory() {
   const reportHistory = [
     {
       id: "rep-001",
-      name: "Monthly Business Review - March 2024",
+      name: "Monthly Business Review - March 2025",
       type: "Internal",
-      submittedDate: "April 5, 2024",
+      submittedDate: "April 5, 2025",
       status: "Approved",
       submittedBy: "Jane Smith",
     },
     {
       id: "rep-002",
-      name: "FCA Compliance Report - H1 2024",
+      name: "FCA Compliance Report - H2 2024",
       type: "Regulatory",
-      submittedDate: "June 28, 2024",
-      status: "Pending Review",
+      submittedDate: "Dec 31, 2024",
+      status: "Approved",
       submittedBy: "John Doe",
     },
     {
       id: "rep-003",
-      name: "Quarterly Business Review - Q1 2024",
+      name: "Quarterly Business Review - Q1 2025",
       type: "Internal",
-      submittedDate: "April 15, 2024",
+      submittedDate: "Mar 15, 2025",
       status: "Approved",
       submittedBy: "Alex Johnson",
     },
     {
       id: "rep-004",
-      name: "Federal Reserve Report - Q1 2024",
+      name: "Federal Reserve Report - Q1 2025",
       type: "Regulatory",
-      submittedDate: "April 25, 2024",
+      submittedDate: "April 25, 2025",
       status: "Rejected",
       submittedBy: "Sarah Williams",
     },
     {
       id: "rep-005",
-      name: "AML/KYC Compliance Report - April 2024",
+      name: "AML/KYC Compliance Report - April 2025",
       type: "Regulatory",
-      submittedDate: "May 8, 2024",
-      status: "Approved",
+      submittedDate: "May 10, 2025",
+      status: "Pending Review",
       submittedBy: "Michael Brown",
     },
   ]
 
-  const getStatusBadge = (status) => {
+  const getStatusBadge = (status: string) => {
     switch (status) {
       case "Approved":
         return (

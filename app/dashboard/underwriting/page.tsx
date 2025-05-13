@@ -114,7 +114,7 @@ export default function UnderwritingPage() {
                   <p className="text-sm font-medium">Loan-to-Value Ratio</p>
                   <p className="text-sm text-muted-foreground">Maximum: 80%</p>
                   <div className="h-2 w-full rounded-full bg-secondary mt-2">
-                    <div className="h-2 w-[80%] rounded-full bg-blue-500"></div>
+                    <div className="h-2 w-[80%] rounded-full bg-amber-500"></div>
                   </div>
                 </div>
               </div>
@@ -194,7 +194,7 @@ export default function UnderwritingPage() {
 
             <div className="rounded-lg border p-4">
               <div className="flex items-center mb-4">
-                <CreditCard className="h-5 w-5 text-amber-500 mr-2" />
+                <CreditCard className="h-5 w-5 text-pink-500 mr-2" />
                 <h3 className="text-lg font-medium">Unsecured Loans</h3>
               </div>
               <div className="grid gap-4 md:grid-cols-3">
@@ -202,21 +202,21 @@ export default function UnderwritingPage() {
                   <p className="text-sm font-medium">Credit Score</p>
                   <p className="text-sm text-muted-foreground">Minimum: 650</p>
                   <div className="h-2 w-full rounded-full bg-secondary mt-2">
-                    <div className="h-2 w-[65%] rounded-full bg-amber-500"></div>
+                    <div className="h-2 w-[65%] rounded-full bg-pink-500"></div>
                   </div>
                 </div>
                 <div>
                   <p className="text-sm font-medium">Debt-to-Income Ratio</p>
                   <p className="text-sm text-muted-foreground">Maximum: 45%</p>
                   <div className="h-2 w-full rounded-full bg-secondary mt-2">
-                    <div className="h-2 w-[45%] rounded-full bg-amber-500"></div>
+                    <div className="h-2 w-[45%] rounded-full bg-pink-500"></div>
                   </div>
                 </div>
                 <div>
                   <p className="text-sm font-medium">Employment History</p>
                   <p className="text-sm text-muted-foreground">Minimum: 1 year current employer</p>
                   <div className="h-2 w-full rounded-full bg-secondary mt-2">
-                    <div className="h-2 w-[80%] rounded-full bg-amber-500"></div>
+                    <div className="h-2 w-[80%] rounded-full bg-pink-500"></div>
                   </div>
                 </div>
               </div>
@@ -297,7 +297,7 @@ export default function UnderwritingPage() {
               <ul className="text-sm space-y-1 list-disc pl-5">
               <li>Implement tiered interest rates based on credit score bands</li>
               <li>Add additional verification for borrowers with recent address changes</li>
-              <li>Reduce maximum loan amount for borrowers with DTI > 40%</li>
+              <li>Reduce maximum loan amount for borrowers with DTI &gt; 40%</li>
               </ul>
               <p className="text-sm text-primary mt-2">Projected impact: -0.3% approval rate, -2.1% delinquency rate</p>
             </div>

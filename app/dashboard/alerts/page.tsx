@@ -66,8 +66,8 @@ export default function AlertsPage() {
     },
     {
       id: 5,
-      title: "Secured loan collateral value decrease",
-      description: "Average collateral value for secured loans has decreased by 3.5%.",
+      title: "Mortgage loan’s collateral value decreased",
+      description: "Average collateral value for mortgage loans has decreased by 5.0%.",
       severity: "medium",
       timestamp: "2 weeks ago",
       status: "active",

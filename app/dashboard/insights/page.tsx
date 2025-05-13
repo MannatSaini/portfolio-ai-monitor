@@ -20,7 +20,7 @@ export default function ReportsPage() {
       id: 1,
       title: "Delinquency Risk Analysis by Loan Type",
       description: "Comprehensive analysis of delinquency risk factors across different loan types.",
-      date: "Feb 15, 2025",
+      date: "May 09, 2025",
       type: "Risk Analysis",
       icon: BarChart3,
       loanType: "All Loans",
@@ -29,7 +29,7 @@ export default function ReportsPage() {
       id: 2,
       title: "Credit Score Trend Analysis by Age Group",
       description: "Analysis of credit score trends across different customer age groups.",
-      date: "Jan 10, 2025",
+      date: "Apr 25, 2025",
       type: "Demographics",
       icon: PieChart,
       loanType: "All Loans",
@@ -38,7 +38,7 @@ export default function ReportsPage() {
       id: 3,
       title: "Housing Loan Performance Report",
       description: "Detailed performance metrics for the housing loan portfolio.",
-      date: "Dec 15, 2024",
+      date: "Apr 02, 2024",
       type: "Performance",
       icon: Home,
       loanType: "Housing Loans",
@@ -101,13 +101,12 @@ export default function ReportsPage() {
             <Sparkles className="mr-2 h-5 w-5 text-primary" />
              AI Insight Generator
           </CardTitle>
-          <CardDescription>Generate custom insights using our advanced AI technology</CardDescription>
+          <CardDescription>Generate custom insights using your AI co-pilot</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <p className="text-sm">
-              Our AI can analyze your loan portfolio and generate custom insights based on your specific needs. Simply
-              describe what you're looking for, and our AI will create a detailed insights for you.
+              Your Co-pilot can analyze your loan portfolio and generate custom insights based on your specific needs. Simply describe what you're looking for, and we will create detailed insights for you.
             </p>
             <div className="rounded-md border p-4 bg-white dark:bg-gray-900" >
               <h3 className="font-medium mb-2">Example prompts:</h3>
