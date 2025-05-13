@@ -10,10 +10,10 @@ interface TicketStatsProps {
 
 export function TicketStats({ tickets = [] }: TicketStatsProps) {
   // Calculate stats
-  const openCount = 158//tickets.filter((t) => t.status.toLowerCase() === "open").length
-  const inProgressCount = 73 // tickets.filter((t) => t.status.toLowerCase() === "in progress").length
+  const openCount = 9//tickets.filter((t) => t.status.toLowerCase() === "open").length
+  const inProgressCount = 5 // tickets.filter((t) => t.status.toLowerCase() === "in progress").length
   const resolvedCount = tickets.filter((t) => t.status.toLowerCase() === "resolved").length
-  const closedCount = 17//tickets.filter((t) => t.status.toLowerCase() === "closed").length
+  const closedCount = 2//tickets.filter((t) => t.status.toLowerCase() === "closed").length
   const blockedCount = tickets.filter((t) => t.status.toLowerCase() === "blocked").length
 
   // Calculate tickets due soon (within 3 days)

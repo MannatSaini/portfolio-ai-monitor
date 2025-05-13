@@ -10,6 +10,13 @@ export default function SocureVerificationUI() {
   const [isConfigExpanded, setIsConfigExpanded] = useState(true)
   const [zoomLevel, setZoomLevel] = useState(95)
   const router = useRouter()
+  const [fields, setFields] = useState([
+    { label: "Credit Score", field: "620", hasAsterisk: false },
+    { label: "Debt-to-income", field: "43%", hasAsterisk: false },
+    { label: "Loan-to-Value", field: "80%", hasAsterisk: false },
+    { label: "Delayed-Payment", field: "1", hasAsterisk: false },
+    { label: "Employment-Years", field: "5", hasAsterisk: false },
+  ])
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -188,27 +195,30 @@ export default function SocureVerificationUI() {
             {isConfigExpanded && (
               <div className="p-4 pt-0 space-y-4">
                 {[
-                  { label: "Credit Score", field: "620" },
-                  { label: "Debt-to-income", field: "43%" },
-                  { label: "Loan-to-Value", field: "80%" },
-                  { label: "Delayed-Payment", field: "" },
-                  { label: "Employment-Years", field: "" },
-                ].map((item) => (
-                  <div key={item.label} className="grid grid-cols-[180px_1fr] gap-4 items-center">
+                  { label: "Credit Score"},
+                  { label: "Debt-to-income"},
+                  { label: "Loan-to-Value"},
+                  { label: "Delayed-Payment"},
+                  { label: "Employment-Years"},
+                ].map((item, index) => (
+                    <div key={item.label} className="grid grid-cols-[180px_1fr] gap-4 items-center">
                     <div className="flex items-center gap-1">
                       <span>{item.label}</span>
-                      {item.hasAsterisk && <span className="text-gray-400">*</span>}
                       <button className="text-gray-400 ml-1">
-                        <Info size={14} />
+                      <Info size={12} />
                       </button>
                     </div>
                     <input
                       type="text"
-                      value={item.field}
-                      readOnly
+                      value={fields[index].field}
+                      onChange={(e) => {
+                        const updatedFields = [...fields];
+                        updatedFields[index] = { ...updatedFields[index], field: e.target.value };
+                        setFields(updatedFields);
+                      }}
                       className="border rounded-md p-2 bg-gray-50 text-gray-500 w-full"
                     />
-                  </div>
+                    </div>
                 ))}
               </div>
             )}

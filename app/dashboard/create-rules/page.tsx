@@ -120,15 +120,14 @@ export default function SocureVerificationUI() {
                   <div key={item.label} className="grid grid-cols-[180px_1fr] gap-4 items-center">
                     <div className="flex items-center gap-1">
                       <span>{item.label}</span>
-                      {item.hasAsterisk && <span className="text-gray-400">*</span>}
                       <button className="text-gray-400 ml-1">
                         <Info size={14} />
                       </button>
                     </div>
                     <input
                       type="text"
-                      value={item.field}
-                      readOnly
+                      onChange={(e) => (item.field = e.target.value)}
+                      placeholder="Enter value"
                       className="border rounded-md p-2 bg-gray-50 text-gray-500 w-full"
                     />
                   </div>

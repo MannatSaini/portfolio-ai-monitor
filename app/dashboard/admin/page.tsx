@@ -43,7 +43,7 @@ export default function AdminConsolePage() {
             <Tickets className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">248</div>
+            <div className="text-2xl font-bold">16</div>
           </CardContent>
         </Card>
         <Card onClick={() => window.location.href = "/dashboard/admin/tickets"}>
@@ -52,7 +52,7 @@ export default function AdminConsolePage() {
         <Ticket className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-        <div className="text-2xl font-bold">158</div>
+        <div className="text-2xl font-bold">9</div>
           </CardContent>
         </Card>
         <Card onClick={() => window.location.href = "/dashboard/admin/tickets"}>
@@ -61,7 +61,7 @@ export default function AdminConsolePage() {
         <TicketCheck className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-        <div className="text-2xl font-bold">73</div>
+        <div className="text-2xl font-bold">5</div>
           </CardContent>
         </Card>
       </div>
