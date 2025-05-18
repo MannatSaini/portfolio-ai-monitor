@@ -32,6 +32,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
+import { createJiraTicket } from "@/lib/jira"
 
 export default function DelinquencyReviewPage() {
   const { toast } = useToast()
@@ -164,12 +165,28 @@ export default function DelinquencyReviewPage() {
     setIsShareModalOpen(false)
   }
 
-  const handleCreateTicket = () => {
-    toast({
-      title: "Jira Ticket Created",
-      description: `Jira ticket has been created for ${selectedLoans.length} delinquent loans.`,
-    })
-    setIsJiraModalOpen(false)
+  const handleCreateTicket = async () => {
+    const result = await createJiraTicket({
+      summary: `Delinquency Review Required - ${selectedLoans.length} Loans`,
+      description: `Please review and take appropriate action on the following delinquent loans:\n\n${selectedLoans.join(
+        ", ",
+      )}\n\nTotal loans: ${selectedLoans.length}`,
+      labels: ["Underwriting", "Policy", "Delinquency"]
+    });
+
+    if (result.success) {
+      toast({
+        title: "Jira Ticket Created",
+        description: `Jira ticket has been created for ${selectedLoans.length} loans`,
+      });
+      setIsJiraModalOpen(false);
+    } else {
+      toast({
+        title: "Error",
+        description: result.error || "Failed to create JIRA ticket. Please try again.",
+        variant: "destructive",
+      });
+    }
   }
 
   const getRiskLevelColor = (riskLevel: string) => {

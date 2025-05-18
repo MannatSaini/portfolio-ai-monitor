@@ -32,6 +32,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
+import { createJiraTicket } from "@/lib/jira"
 
 export default function DelinquencyReviewPage() {
   const { toast } = useToast()
@@ -41,6 +42,7 @@ export default function DelinquencyReviewPage() {
   const [isJiraModalOpen, setIsJiraModalOpen] = useState(false)
   const [isDetailViewOpen, setIsDetailViewOpen] = useState(false)
   const [selectedLoanDetail, setSelectedLoanDetail] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
   const [shareOption, setShareOption] = useState("email")
 
   // Sample delinquent loans data
@@ -149,12 +151,35 @@ export default function DelinquencyReviewPage() {
     setIsShareModalOpen(false)
   }
 
-  const handleCreateTicket = () => {
-    toast({
-      title: "Jira Ticket Created",
-      description: `Jira ticket has been created for ${selectedLoans.length}`,
-    })
-    setIsJiraModalOpen(false)
+  const handleCreateTicket = async () => {
+    setLoading(true); // Start loader
+    try {
+      const result = await createJiraTicket({
+        summary: `Application Review Required - ${selectedLoans.length} Loans`,
+        description: `Please review and take appropriate action on the following loan applications:\n\n${selectedLoans.join(
+          ", ",
+        )}\n\nTotal loans: ${selectedLoans.length}`,
+        labels: ["Underwriting", "Policy", "Application Review"]
+      });
+
+      if (result.success) {
+        toast({
+          title: "Jira Ticket Created",
+          description: `Jira ticket has been created for ${selectedLoans.length} loans`,
+        });
+        setIsJiraModalOpen(false);
+      } else {
+        throw new Error(result.error || "Failed to create JIRA ticket. Please try again.");
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "An unknown error occurred",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false); // Stop loader
+    }
   }
 
   const getRiskLevelColor = (riskLevel: string) => {
