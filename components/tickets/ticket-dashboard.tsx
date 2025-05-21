@@ -6,12 +6,15 @@ import { TicketFilters } from "./ticket-filters"
 import { TicketStats } from "./ticket-stats"
 import { Button } from "@/components/ui/button"
 import { PlusCircle, RefreshCw } from "lucide-react"
-import { useTickets } from "@/hooks/use-tickets"
+import { useCollaboration } from "@/hooks/use-collaboration"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export function TicketDashboard() {
-  const { tickets, isLoading, error, refresh } = useTickets()
+  const { tickets, isLoadingTickets: isLoading, error, fetchTickets: refresh } = useCollaboration()
   const [activeTab, setActiveTab] = useState("all")
+
+  // Ensure tickets is always an array
+  const ticketsArray = Array.isArray(tickets) ? tickets : []
 
   return (
     <div className="space-y-6">
@@ -46,32 +49,32 @@ export function TicketDashboard() {
         </div>
 
         <TabsContent value="all" className="mt-6">
-          <TicketList tickets={tickets} isLoading={isLoading} error={error} />
+          <TicketList tickets={ticketsArray} isLoading={isLoading} error={error ? new Error(error) : null} />
         </TabsContent>
 
         <TabsContent value="assigned" className="mt-6">
           <TicketList
-            tickets={tickets?.filter((ticket) => ticket.assignee?.id === "current-user")}
+            tickets={ticketsArray.filter((ticket) => ticket?.fields?.assignee?.displayName === "current-user")}
             isLoading={isLoading}
-            error={error}
+            error={error ? new Error(error) : null}
           />
         </TabsContent>
 
         <TabsContent value="watching" className="mt-6">
           <TicketList
-            tickets={tickets?.filter((ticket) => ticket.watchers?.includes("current-user"))}
+            tickets={ticketsArray.filter((ticket) => ticket?.fields?.labels?.includes("watching"))}
             isLoading={isLoading}
-            error={error}
+            error={error ? new Error(error) : null}
           />
         </TabsContent>
 
         <TabsContent value="recent" className="mt-6">
           <TicketList
-            tickets={tickets
-              ?.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+            tickets={ticketsArray
+              .sort((a, b) => new Date(b?.fields?.updated ?? 0).getTime() - new Date(a?.fields?.updated ?? 0).getTime())
               .slice(0, 10)}
             isLoading={isLoading}
-            error={error}
+            error={error ? new Error(error) : null}
           />
         </TabsContent>
       </Tabs>

@@ -16,6 +16,8 @@ import {
   TicketCheck,
   TrendingDown,
   TrendingUp,
+  CheckCircle,
+  Loader2,
 } from "lucide-react"
 import { useToast } from "@/components/ui/use-toast"
 import {
@@ -33,6 +35,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { createJiraTicket } from "@/lib/jira"
+import { useCollaboration } from "@/hooks/use-collaboration"
+import { getErrorMessage, getErrorAction } from "@/lib/error-mapping"
+import { Toaster } from "@/components/ui/toaster"
 
 export default function DelinquencyReviewPage() {
   const { toast } = useToast()
@@ -43,6 +48,27 @@ export default function DelinquencyReviewPage() {
   const [isDetailViewOpen, setIsDetailViewOpen] = useState(false)
   const [selectedLoanDetail, setSelectedLoanDetail] = useState<any>(null)
   const [shareOption, setShareOption] = useState("email")
+
+  const {
+    loading,
+    error,
+    errorAction,
+    success,
+    selectedLabels,
+    setSelectedLabels,
+    ticketFormData,
+    setTicketFormData,
+    handleCreateTicket,
+    resetState
+  } = useCollaboration({
+    onSuccess: () => {
+      // Close modal after 1 second
+      setTimeout(() => {
+        setIsJiraModalOpen(false);
+        resetState();
+      }, 1000);
+    }
+  });
 
   // Sample delinquent loans data
   const delinquentLoans = [
@@ -146,7 +172,33 @@ export default function DelinquencyReviewPage() {
   }
 
   const handleCreateJiraTicket = () => {
-    setIsJiraModalOpen(true)
+    setIsJiraModalOpen(true);
+    resetState();
+  }
+
+  const handleCreateTicketClick = async () => {
+    if (selectedLoans.length === 0) {
+      await handleCreateTicket({
+        summary: "",
+        description: "",
+        labels: [],
+        status: "open"
+      });
+      return;
+    }
+
+    await handleCreateTicket({
+      summary: ticketFormData.summary || `Delinquency Review Required - ${selectedLoans.length} Loans`,
+      description: ticketFormData.description || `Please review and take appropriate action on the following delinquent loans:\n\n${selectedLoans.join(
+        ", ",
+      )}\n\nTotal loans: ${selectedLoans.length}`,
+      ticketType: ticketFormData.ticketType,
+      priority: ticketFormData.priority,
+      assignee: ticketFormData.assignee,
+      includeDetails: ticketFormData.includeDetails,
+      labels: ["Underwriting", "Policy", "Delinquency"],
+      status: "open"
+    });
   }
 
   const handleSendEmail = () => {
@@ -163,30 +215,6 @@ export default function DelinquencyReviewPage() {
       description: `Delinquency report for ${selectedLoans.length} loans has been sent to Slack.`,
     })
     setIsShareModalOpen(false)
-  }
-
-  const handleCreateTicket = async () => {
-    const result = await createJiraTicket({
-      summary: `Delinquency Review Required - ${selectedLoans.length} Loans`,
-      description: `Please review and take appropriate action on the following delinquent loans:\n\n${selectedLoans.join(
-        ", ",
-      )}\n\nTotal loans: ${selectedLoans.length}`,
-      labels: ["Underwriting", "Policy", "Delinquency"]
-    });
-
-    if (result.success) {
-      toast({
-        title: "Jira Ticket Created",
-        description: `Jira ticket has been created for ${selectedLoans.length} loans`,
-      });
-      setIsJiraModalOpen(false);
-    } else {
-      toast({
-        title: "Error",
-        description: result.error || "Failed to create JIRA ticket. Please try again.",
-        variant: "destructive",
-      });
-    }
   }
 
   const getRiskLevelColor = (riskLevel: string) => {
@@ -213,51 +241,39 @@ export default function DelinquencyReviewPage() {
 
   return (
     <div className="space-y-6">
+      <Toaster />
       <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Reviews</h1>
-        <p className="text-muted-foreground">Review and manage your alerts.</p>
+        <h1 className="text-3xl font-bold tracking-tight">Alert Reviews</h1>
+        <p className="text-muted-foreground">Review and manage your alert pipeline</p>
       </div>
 
       {/* Overview Cards */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Delinquent Loans</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Alerts</CardTitle>
             <AlertTriangle className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">187</div>
-            <p className="text-xs text-muted-foreground">+12 from last month</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Delinquency Rate</CardTitle>
+            <CardTitle className="text-sm font-medium">Resolved</CardTitle>
             <TrendingUp className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">2.4%</div>
-            <p className="text-xs text-muted-foreground">+0.3% from last month</p>
+            <div className="text-2xl font-bold">0</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Average Days Late</CardTitle>
+            <CardTitle className="text-sm font-medium">Pending</CardTitle>
             <Clock className="h-4 w-4 text-amber-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">42</div>
-            <p className="text-xs text-muted-foreground">-3 days from last month</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Recovery Rate</CardTitle>
-            <TrendingDown className="h-4 w-4 text-green-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">68%</div>
-            <p className="text-xs text-muted-foreground">+5% from last month</p>
+            <div className="text-2xl font-bold">187</div>
           </CardContent>
         </Card>
       </div>
@@ -268,7 +284,7 @@ export default function DelinquencyReviewPage() {
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <input
             type="text"
-            placeholder="Search loans..."
+            placeholder="Search alerts..."
             className="w-full sm:w-[300px] pl-8 h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -293,6 +309,32 @@ export default function DelinquencyReviewPage() {
           </Button>
         </div>
       </div>
+
+      {/* Error State */}
+      {error && (
+        <div className="rounded-md bg-destructive/15 p-4">
+          <div className="flex items-center">
+            <AlertTriangle className="h-4 w-4 text-destructive" />
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-destructive">Error</h3>
+              <div className="mt-2 text-sm text-destructive">
+                <p>{error}</p>
+                {errorAction && (
+                  <p className="mt-1 text-xs">{errorAction}</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Loading State */}
+      {loading && (
+        <div className="flex items-center justify-center p-8">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          <span className="ml-2 text-muted-foreground">Loading tickets...</span>
+        </div>
+      )}
 
       {/* Delinquent Loans Table */}
       <Card>
@@ -485,7 +527,10 @@ export default function DelinquencyReviewPage() {
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="ticket-type">Ticket Type</Label>
-              <Select defaultValue="task">
+              <Select 
+                defaultValue={ticketFormData.ticketType}
+                onValueChange={(value) => setTicketFormData(prev => ({ ...prev, ticketType: value }))}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select ticket type" />
                 </SelectTrigger>
@@ -499,7 +544,10 @@ export default function DelinquencyReviewPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="priority">Priority</Label>
-              <Select defaultValue="high">
+              <Select 
+                defaultValue={ticketFormData.priority}
+                onValueChange={(value) => setTicketFormData(prev => ({ ...prev, priority: value }))}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select priority" />
                 </SelectTrigger>
@@ -513,7 +561,10 @@ export default function DelinquencyReviewPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="assignee">Assignee</Label>
-              <Select defaultValue="delinquency-team">
+              <Select 
+                defaultValue={ticketFormData.assignee}
+                onValueChange={(value) => setTicketFormData(prev => ({ ...prev, assignee: value }))}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select assignee" />
                 </SelectTrigger>
@@ -527,21 +578,32 @@ export default function DelinquencyReviewPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="summary">Summary</Label>
-              <Input id="summary" defaultValue={`Delinquency Review Required - ${selectedLoans.length} Loans`} />
+              <Input 
+                id="summary" 
+                defaultValue={ticketFormData.summary || `Delinquency Review Required - ${selectedLoans.length} Loans`}
+                onChange={(e) => setTicketFormData(prev => ({ ...prev, summary: e.target.value }))}
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="description">Description</Label>
               <Textarea
                 id="description"
                 placeholder="Add a description..."
-                defaultValue={`Please review and take appropriate action on the following delinquent loans:\n\n${selectedLoans.join(
+                defaultValue={ticketFormData.description || `Please review and take appropriate action on the following delinquent loans:\n\n${selectedLoans.join(
                   ", ",
                 )}\n\nTotal loans: ${selectedLoans.length}`}
+                onChange={(e) => setTicketFormData(prev => ({ ...prev, description: e.target.value }))}
                 rows={4}
               />
             </div>
             <div className="flex items-center space-x-2">
-              <Checkbox id="include-loan-details" defaultChecked />
+              <Checkbox 
+                id="include-loan-details" 
+                defaultChecked={ticketFormData.includeDetails}
+                onCheckedChange={(checked) => 
+                  setTicketFormData(prev => ({ ...prev, includeDetails: checked as boolean }))
+                }
+              />
               <label
                 htmlFor="include-loan-details"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -551,10 +613,44 @@ export default function DelinquencyReviewPage() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsJiraModalOpen(false)}>
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                setIsJiraModalOpen(false);
+                resetState();
+              }}
+            >
               Cancel
             </Button>
-            <Button onClick={handleCreateTicket}>Create Ticket</Button>
+            <Button 
+              onClick={handleCreateTicketClick} 
+              disabled={loading}
+              variant={error ? "destructive" : success ? "default" : "default"}
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Creating...
+                </>
+              ) : error ? (
+                <div className="flex flex-col items-center">
+                  <div className="flex items-center">
+                    <AlertTriangle className="mr-2 h-4 w-4" />
+                    {error}
+                  </div>
+                  {errorAction && (
+                    <span className="text-xs mt-1">{errorAction}</span>
+                  )}
+                </div>
+              ) : success ? (
+                <>
+                  <CheckCircle className="mr-2 h-4 w-4" />
+                  Ticket Created!
+                </>
+              ) : (
+                "Create Ticket"
+              )}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

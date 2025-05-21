@@ -1,93 +1,84 @@
 "use client"
 
-import type { Ticket } from "@/types/ticket"
-import { Card, CardContent } from "@/components/ui/card"
-import { AlertCircle, Clock, CheckCircle, XCircle, AlertTriangle } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { AlertCircle, CheckCircle2, Clock, FileWarning, HelpCircle } from "lucide-react"
 
-interface TicketStatsProps {
-  tickets?: Ticket[]
+interface JiraTicket {
+  id: string;
+  key: string;
+  fields: {
+    summary: string;
+    description: string;
+    status: {
+      name: string;
+    };
+    priority: {
+      name: string;
+    };
+    assignee: {
+      displayName: string;
+    };
+    created: string;
+    updated: string;
+    labels: string[];
+  };
 }
 
-export function TicketStats({ tickets = [] }: TicketStatsProps) {
-  // Calculate stats
-  const openCount = 9//tickets.filter((t) => t.status.toLowerCase() === "open").length
-  const inProgressCount = 5 // tickets.filter((t) => t.status.toLowerCase() === "in progress").length
-  const resolvedCount = tickets.filter((t) => t.status.toLowerCase() === "resolved").length
-  const closedCount = 2//tickets.filter((t) => t.status.toLowerCase() === "closed").length
-  const blockedCount = tickets.filter((t) => t.status.toLowerCase() === "blocked").length
+interface TicketStatsProps {
+  tickets: JiraTicket[];
+}
+
+export function TicketStats({ tickets }: TicketStatsProps) {
+  // Ensure tickets is always an array
+  const ticketsArray = Array.isArray(tickets) ? tickets : []
+
+  const openCount = ticketsArray.filter((t) => t?.fields?.status?.name?.toLowerCase() === "open").length
+  const inProgressCount = ticketsArray.filter((t) => t?.fields?.status?.name?.toLowerCase() === "in progress").length
+  const resolvedCount = ticketsArray.filter((t) => t?.fields?.status?.name?.toLowerCase() === "resolved").length
+  const closedCount = ticketsArray.filter((t) => t?.fields?.status?.name?.toLowerCase() === "closed").length
+  const blockedCount = ticketsArray.filter((t) => t?.fields?.status?.name?.toLowerCase() === "blocked").length
+  const doneCount = ticketsArray.filter((t) => t?.fields?.status?.name?.toLowerCase() === "done").length
 
   // Calculate tickets due soon (within 3 days)
   const now = new Date()
   const threeDaysFromNow = new Date()
   threeDaysFromNow.setDate(now.getDate() + 3)
 
-  const dueSoonCount = tickets.filter((t) => {
-    if (!t.dueDate) return false
-    const dueDate = new Date(t.dueDate)
-    return dueDate > now && dueDate <= threeDaysFromNow
+  const dueSoonCount = ticketsArray.filter((t) => {
+    if (!t?.fields?.updated) return false
+    const dueDate = new Date(t.fields.updated)
+    return dueDate >= now && dueDate <= threeDaysFromNow
   }).length
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       <Card>
-        <CardContent className="p-4 flex flex-col items-center justify-center">
-          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-blue-600 mb-2">
-            <AlertCircle className="h-5 w-5" />
-          </div>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Open</CardTitle>
+          <FileWarning className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
           <div className="text-2xl font-bold">{openCount}</div>
-          <p className="text-sm text-muted-foreground">Open</p>
         </CardContent>
       </Card>
-
       <Card>
-        <CardContent className="p-4 flex flex-col items-center justify-center">
-          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-yellow-100 text-yellow-600 mb-2">
-            <Clock className="h-5 w-5" />
-          </div>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">In Progress</CardTitle>
+          <Clock className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
           <div className="text-2xl font-bold">{inProgressCount}</div>
-          <p className="text-sm text-muted-foreground">In Progress</p>
         </CardContent>
       </Card>
-
-     { /* <Card>
-        <CardContent className="p-4 flex flex-col items-center justify-center">
-          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-green-100 text-green-600 mb-2">
-            <CheckCircle className="h-5 w-5" />
-          </div>
-          <div className="text-2xl font-bold">{resolvedCount}</div>
-          <p className="text-sm text-muted-foreground">Resolved</p>
-        </CardContent>
-      </Card> */}
-
       <Card>
-        <CardContent className="p-4 flex flex-col items-center justify-center">
-          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-gray-600 mb-2">
-            <XCircle className="h-5 w-5" />
-          </div>
-          <div className="text-2xl font-bold">{closedCount}</div>
-          <p className="text-sm text-muted-foreground">Closed</p>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Done</CardTitle>
+          <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{doneCount}</div>
         </CardContent>
       </Card>
-
-      { /*   <Card>
-        <CardContent className="p-4 flex flex-col items-center justify-center">
-          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-red-100 text-red-600 mb-2">
-            <AlertTriangle className="h-5 w-5" />
-          </div>
-          <div className="text-2xl font-bold">{blockedCount}</div>
-          <p className="text-sm text-muted-foreground">Blocked</p>
-        </CardContent>
-      </Card> 
-
-      <Card>
-        <CardContent className="p-4 flex flex-col items-center justify-center">
-          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-orange-100 text-orange-600 mb-2">
-            <Clock className="h-5 w-5" />
-          </div>
-          <div className="text-2xl font-bold">{dueSoonCount}</div>
-          <p className="text-sm text-muted-foreground">Due Soon</p>
-        </CardContent>
-      </Card>*/}
     </div>
   )
 }

@@ -1,14 +1,46 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tickets,Ticket,TicketCheck,Settings, Users, Bell, Shield, Database, Lock, Globe, Cpu, BarChart3, Sliders, CreditCard,CheckCircle } from "lucide-react"
+import { Tickets, Ticket, TicketCheck, Settings, Users, Bell, Shield, Database, Lock, Globe, Cpu, BarChart3, Sliders, CreditCard, CheckCircle, AlertCircle, Clock, Loader2 } from "lucide-react"
 import { useToast } from "@/components/ui/use-toast"
+import axios from "axios"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Skeleton } from "@/components/ui/skeleton"
+import { API_CONFIG } from "@/config/api"
+
+interface JiraTicket {
+  id: string;
+  key: string;
+  fields: {
+    summary: string;
+    description: string;
+    status: {
+      name: string;
+    };
+    priority: {
+      name: string;
+    };
+    issuetype: {
+      id: string;
+      name: string;
+    };
+    assignee: {
+      displayName: string;
+    };
+    created: string;
+    updated: string;
+    labels: string[];
+  };
+}
 
 export default function AdminConsolePage() {
   const { toast } = useToast()
   const [aiModelStatus, setAiModelStatus] = useState("Active")
+  const [tickets, setTickets] = useState<JiraTicket[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const handleRetrainModel = () => {
     toast({
@@ -26,44 +58,144 @@ export default function AdminConsolePage() {
     })
   }
 
-  return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Admin Console</h1>
-        <p className="text-muted-foreground">
-          Review all the actions and  configurations
-        </p>
-      </div>
+  useEffect(() => {
+    const fetchTickets = async () => {
+      try {
+        const response = await axios.get(
+          `${API_CONFIG.JIRA_API.BASE_URL}${API_CONFIG.JIRA_API.ENDPOINTS.GET_ISSUES_BY_PROJECT}?projectKey=MAQ`,
+          {
+            headers: API_CONFIG.JIRA_API.HEADERS
+          }
+        )
+        if (response.data && response.data.issues) {
+          setTickets(response.data.issues)
+        } else {
+          setTickets([])
+        }
+      } catch (err) {
+        setError('Failed to fetch tickets. Please try again later.')
+        console.error('Error fetching tickets:', err)
+      } finally {
+        setIsLoading(false)
+      }
+    }
 
-      {/* Admin Overview */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    fetchTickets()
+  }, [])
+
+  // Calculate ticket statistics
+  const totalTickets = tickets.length
+  const openTickets = tickets.filter(ticket => 
+    ticket.fields.status.name.toLowerCase() === "open"
+  ).length
+  const inProgressTickets = tickets.filter(ticket => 
+    ticket.fields.status.name.toLowerCase() === "in progress"
+  ).length
+
+  const renderTicketStats = () => {
+    if (isLoading) {
+      return (
+        <>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <Skeleton className="h-4 w-[100px]" />
+              <Skeleton className="h-4 w-4" />
+            </CardHeader>
+            <CardContent>
+              <Skeleton className="h-8 w-[60px]" />
+              <Skeleton className="h-4 w-[150px] mt-1" />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <Skeleton className="h-4 w-[100px]" />
+              <Skeleton className="h-4 w-4" />
+            </CardHeader>
+            <CardContent>
+              <Skeleton className="h-8 w-[60px]" />
+              <Skeleton className="h-4 w-[150px] mt-1" />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <Skeleton className="h-4 w-[100px]" />
+              <Skeleton className="h-4 w-4" />
+            </CardHeader>
+            <CardContent>
+              <Skeleton className="h-8 w-[60px]" />
+              <Skeleton className="h-4 w-[150px] mt-1" />
+            </CardContent>
+          </Card>
+        </>
+      )
+    }
+
+    if (error) {
+      return (
+        <div className="col-span-3">
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        </div>
+      )
+    }
+
+    return (
+      <>
         <Card onClick={() => window.location.href = "/dashboard/admin/tickets"}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Tickets</CardTitle>
             <Tickets className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">16</div>
+            <div className="text-2xl font-bold">{totalTickets}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Total number of tickets in the project
+            </p>
           </CardContent>
         </Card>
         <Card onClick={() => window.location.href = "/dashboard/admin/tickets"}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">Open Tickets</CardTitle>
-        <Ticket className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Open Tickets</CardTitle>
+            <AlertCircle className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
-        <div className="text-2xl font-bold">9</div>
+            <div className="text-2xl font-bold">{openTickets}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Tickets that need attention
+            </p>
           </CardContent>
         </Card>
         <Card onClick={() => window.location.href = "/dashboard/admin/tickets"}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">In-Progress Tickets</CardTitle>
-        <TicketCheck className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">In Progress</CardTitle>
+            <Clock className="h-4 w-4 text-yellow-500" />
           </CardHeader>
           <CardContent>
-        <div className="text-2xl font-bold">5</div>
+            <div className="text-2xl font-bold">{inProgressTickets}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Tickets currently being worked on
+            </p>
           </CardContent>
         </Card>
+      </>
+    )
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-3xl font-bold tracking-tight">Admin Console</h1>
+        <p className="text-muted-foreground">
+          Review all the actions and configurations
+        </p>
+      </div>
+
+      {/* Admin Overview */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {renderTicketStats()}
       </div>
 
       {/* Admin Sections */}
@@ -117,37 +249,6 @@ export default function AdminConsolePage() {
           </CardContent>
         </Card>
 
-        {/* System Settings 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Settings className="mr-2 h-5 w-5" />
-              System Settings
-            </CardTitle>
-            <CardDescription>Configure system-wide settings for loan portfolio monitoring</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid gap-4">
-              <Button variant="outline" className="justify-start">
-                <Users className="mr-2 h-4 w-4" />
-                User Management
-              </Button>
-              <Button variant="outline" className="justify-start">
-                <Lock className="mr-2 h-4 w-4" />
-                Security Settings
-              </Button>
-              <Button variant="outline" className="justify-start">
-                <Database className="mr-2 h-4 w-4" />
-                Loan Data Management
-              </Button>
-              <Button variant="outline" className="justify-start">
-                <Globe className="mr-2 h-4 w-4" />
-                Credit Bureau API Configuration
-              </Button>
-            </div>
-          </CardContent>
-        </Card>*/}
-
         {/* Alert Configuration */}
         <Card>
           <CardHeader>
@@ -181,16 +282,6 @@ export default function AdminConsolePage() {
         </Card>
       </div>
 
-      {/* Integration Settings 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <CreditCard className="mr-2 h-5 w-5" />
-            Integration Settings
-          </CardTitle>
-          <CardDescription>Manage data integration</CardDescription>
-        </CardHeader>
-      </Card>*/}
       {/* Credit Bureau Integration */}
       <Card>
         <CardHeader>
@@ -254,87 +345,45 @@ export default function AdminConsolePage() {
             </div>
           </div>
         </CardContent>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="p-4 border rounded-lg">
-                <h3 className="font-medium mb-2">Data Refresh Schedule</h3>
-                <p className="text-sm text-muted-foreground">Automated daily at 9:00 AM</p>
-                <p className="text-sm text-muted-foreground">Last refresh: Today, 9:00 AM</p>
-                <Button size="sm" className="mt-4">
-                  <Sliders className="mr-2 h-4 w-4" />
-                  Adjust Schedule
-                </Button>
-              </div>
+      </Card>
 
-              <div className="p-4 border rounded-lg">
-                <h3 className="font-medium mb-2">Data Points Collected</h3>
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <div className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    <span>Credit Score</span>
-                  </div>
-                  <div className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    <span>Payment History</span>
-                  </div>
-                  <div className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    <span>Credit Utilization</span>
-                  </div>
-                  <div className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    <span>Public Records</span>
-                  </div>
-                </div>
-                <Button size="sm" className="mt-4">
-                  <Settings className="mr-2 h-4 w-4" />
-                  Configure Data Points
-                </Button>
+      {/* System Logs */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Shield className="mr-2 h-5 w-5" />
+            System Logs
+          </CardTitle>
+          <CardDescription>View system activity and error logs</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="h-[200px] overflow-auto rounded-md border p-4 text-sm">
+            <div className="space-y-2">
+              <div>
+                <span className="text-muted-foreground">[2023-09-01 14:32:15]</span> Loan portfolio AI model updated
+                to version 2.4.1
+              </div>
+              <div>
+                <span className="text-muted-foreground">[2023-09-01 12:15:03]</span> Credit bureau API integration
+                refreshed
+              </div>
+              <div>
+                <span className="text-muted-foreground">[2023-09-01 10:05:47]</span> New underwriter added:
+                sarah.johnson@example.com
+              </div>
+              <div>
+                <span className="text-muted-foreground">[2023-09-01 09:12:33]</span> Risk threshold updated for
+                unsecured loans
+              </div>
+              <div>
+                <span className="text-muted-foreground">[2023-08-31 18:45:22]</span> Loan database optimization
+                completed
               </div>
             </div>
           </div>
+          <Button variant="outline">View All Logs</Button>
         </CardContent>
       </Card>
-      <div>
-         {/* System Logs */}
-         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Shield className="mr-2 h-5 w-5" />
-              System Logs
-            </CardTitle>
-            <CardDescription>View system activity and error logs</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="h-[200px] overflow-auto rounded-md border p-4 text-sm">
-              <div className="space-y-2">
-                <div>
-                  <span className="text-muted-foreground">[2023-09-01 14:32:15]</span> Loan portfolio AI model updated
-                  to version 2.4.1
-                </div>
-                <div>
-                  <span className="text-muted-foreground">[2023-09-01 12:15:03]</span> Credit bureau API integration
-                  refreshed
-                </div>
-                <div>
-                  <span className="text-muted-foreground">[2023-09-01 10:05:47]</span> New underwriter added:
-                  sarah.johnson@example.com
-                </div>
-                <div>
-                  <span className="text-muted-foreground">[2023-09-01 09:12:33]</span> Risk threshold updated for
-                  unsecured loans
-                </div>
-                <div>
-                  <span className="text-muted-foreground">[2023-08-31 18:45:22]</span> Loan database optimization
-                  completed
-                </div>
-              </div>
-            </div>
-            <Button variant="outline">View All Logs</Button>
-          </CardContent>
-        </Card>
-      </div>
     </div>
   )
 }

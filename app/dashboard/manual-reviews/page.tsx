@@ -16,6 +16,8 @@ import {
   TicketCheck,
   TrendingDown,
   TrendingUp,
+  Loader2,
+  CheckCircle,
 } from "lucide-react"
 import { useToast } from "@/components/ui/use-toast"
 import {
@@ -33,6 +35,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { createJiraTicket } from "@/lib/jira"
+import { Toaster } from "@/components/ui/toaster"
+import { useCollaboration } from "@/hooks/use-collaboration"
 
 export default function DelinquencyReviewPage() {
   const { toast } = useToast()
@@ -42,8 +46,28 @@ export default function DelinquencyReviewPage() {
   const [isJiraModalOpen, setIsJiraModalOpen] = useState(false)
   const [isDetailViewOpen, setIsDetailViewOpen] = useState(false)
   const [selectedLoanDetail, setSelectedLoanDetail] = useState<any>(null)
-  const [loading, setLoading] = useState(false)
   const [shareOption, setShareOption] = useState("email")
+
+  const {
+    loading,
+    error,
+    errorAction,
+    success,
+    selectedLabels,
+    setSelectedLabels,
+    ticketFormData,
+    setTicketFormData,
+    handleCreateTicket,
+    resetState
+  } = useCollaboration({
+    onSuccess: () => {
+      // Close modal after 1 second
+      setTimeout(() => {
+        setIsJiraModalOpen(false);
+        resetState();
+      }, 1000);
+    }
+  });
 
   // Sample delinquent loans data
   const delinquentLoans = [
@@ -132,7 +156,8 @@ export default function DelinquencyReviewPage() {
   }
 
   const handleCreateJiraTicket = () => {
-    setIsJiraModalOpen(true)
+    setIsJiraModalOpen(true);
+    resetState();
   }
 
   const handleSendEmail = () => {
@@ -151,35 +176,18 @@ export default function DelinquencyReviewPage() {
     setIsShareModalOpen(false)
   }
 
-  const handleCreateTicket = async () => {
-    setLoading(true); // Start loader
-    try {
-      const result = await createJiraTicket({
-        summary: `Application Review Required - ${selectedLoans.length} Loans`,
-        description: `Please review and take appropriate action on the following loan applications:\n\n${selectedLoans.join(
-          ", ",
-        )}\n\nTotal loans: ${selectedLoans.length}`,
-        labels: ["Underwriting", "Policy", "Application Review"]
-      });
-
-      if (result.success) {
-        toast({
-          title: "Jira Ticket Created",
-          description: `Jira ticket has been created for ${selectedLoans.length} loans`,
-        });
-        setIsJiraModalOpen(false);
-      } else {
-        throw new Error(result.error || "Failed to create JIRA ticket. Please try again.");
-      }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "An unknown error occurred",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false); // Stop loader
-    }
+  const handleCreateTicketClick = async () => {
+    await handleCreateTicket({
+      summary: ticketFormData.summary || `Application Review Required - ${selectedLoans.length} Loans`,
+      description: ticketFormData.description || `Please review and take appropriate action on the following loan applications:\n\n${selectedLoans.join(
+        ", ",
+      )}\n\nTotal loans: ${selectedLoans.length}`,
+      ticketType: ticketFormData.ticketType,
+      priority: ticketFormData.priority,
+      assignee: ticketFormData.assignee,
+      includeDetails: ticketFormData.includeDetails,
+      status: "open"
+    });
   }
 
   const getRiskLevelColor = (riskLevel: string) => {
@@ -206,6 +214,7 @@ export default function DelinquencyReviewPage() {
 
   return (
     <div className="space-y-6">
+      <Toaster />
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold tracking-tight">Manual Reviews</h1>
         <p className="text-muted-foreground">Review and enhance your acquisition pipeline </p>
@@ -238,7 +247,6 @@ export default function DelinquencyReviewPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">5</div>
-            <p className="text-xs text-muted-foreground"></p>
           </CardContent>
         </Card>
       </div>
@@ -274,6 +282,24 @@ export default function DelinquencyReviewPage() {
           </Button>
         </div>
       </div>
+
+      {/* Error State */}
+      {error && (
+        <div className="rounded-md bg-destructive/15 p-4">
+          <div className="flex items-center">
+            <AlertTriangle className="h-4 w-4 text-destructive" />
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-destructive">Error</h3>
+              <div className="mt-2 text-sm text-destructive">
+                <p>{error}</p>
+                {errorAction && (
+                  <p className="mt-1 text-xs">{errorAction}</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Delinquent Loans Table */}
         <CardContent>
@@ -447,7 +473,10 @@ export default function DelinquencyReviewPage() {
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="ticket-type">Ticket Type</Label>
-              <Select defaultValue="task">
+              <Select 
+                defaultValue={ticketFormData.ticketType}
+                onValueChange={(value) => setTicketFormData(prev => ({ ...prev, ticketType: value }))}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select ticket type" />
                 </SelectTrigger>
@@ -461,7 +490,10 @@ export default function DelinquencyReviewPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="priority">Priority</Label>
-              <Select defaultValue="high">
+              <Select 
+                defaultValue={ticketFormData.priority}
+                onValueChange={(value) => setTicketFormData(prev => ({ ...prev, priority: value }))}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select priority" />
                 </SelectTrigger>
@@ -475,7 +507,10 @@ export default function DelinquencyReviewPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="assignee">Assignee</Label>
-              <Select defaultValue="delinquency-team">
+              <Select 
+                defaultValue={ticketFormData.assignee}
+                onValueChange={(value) => setTicketFormData(prev => ({ ...prev, assignee: value }))}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select assignee" />
                 </SelectTrigger>
@@ -489,21 +524,32 @@ export default function DelinquencyReviewPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="summary">Summary</Label>
-              <Input id="summary" defaultValue={`Application Review Required - ${selectedLoans.length} Loans`} />
+              <Input 
+                id="summary" 
+                defaultValue={ticketFormData.summary || `Application Review Required - ${selectedLoans.length} Loans`}
+                onChange={(e) => setTicketFormData(prev => ({ ...prev, summary: e.target.value }))}
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="description">Description</Label>
               <Textarea
                 id="description"
                 placeholder="Add a description..."
-                defaultValue={`Please review and take appropriate action on the following loan applications:\n\n${selectedLoans.join(
+                defaultValue={ticketFormData.description || `Please review and take appropriate action on the following loan applications:\n\n${selectedLoans.join(
                   ", ",
                 )}\n\nTotal loans: ${selectedLoans.length}`}
+                onChange={(e) => setTicketFormData(prev => ({ ...prev, description: e.target.value }))}
                 rows={4}
               />
             </div>
             <div className="flex items-center space-x-2">
-              <Checkbox id="include-loan-details" defaultChecked />
+              <Checkbox 
+                id="include-loan-details" 
+                defaultChecked={ticketFormData.includeDetails}
+                onCheckedChange={(checked) => 
+                  setTicketFormData(prev => ({ ...prev, includeDetails: checked as boolean }))
+                }
+              />
               <label
                 htmlFor="include-loan-details"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -513,10 +559,45 @@ export default function DelinquencyReviewPage() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsJiraModalOpen(false)}>
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                setIsJiraModalOpen(false);
+                resetState();
+              }}
+            >
               Cancel
             </Button>
-            <Button onClick={handleCreateTicket}>Create Ticket</Button>
+            {/* Call to Collabiration Integration service */}
+            <Button 
+              onClick={handleCreateTicketClick} 
+              disabled={loading}
+              variant={error ? "destructive" : success ? "default" : "default"}
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Creating...
+                </>
+              ) : error ? (
+                <div className="flex flex-col items-center">
+                  <div className="flex items-center">
+                    <AlertTriangle className="mr-2 h-4 w-4" />
+                    {error}
+                  </div>
+                  {errorAction && (
+                    <span className="text-xs mt-1">{errorAction}</span>
+                  )}
+                </div>
+              ) : success ? (
+                <>
+                  <CheckCircle className="mr-2 h-4 w-4" />
+                  Ticket Created!
+                </>
+              ) : (
+                "Create Ticket"
+              )}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

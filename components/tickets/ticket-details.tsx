@@ -3,20 +3,54 @@
 import { useState } from "react"
 import type { Ticket } from "@/types/ticket"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { formatDistanceToNow, format } from "date-fns"
 import { useToast } from "@/hooks/use-toast"
+import { Badge } from "@/components/ui/badge"
+
+interface JiraTicket {
+  id: string;
+  key: string;
+  self: string;
+  fields: {
+    summary: string;
+    description: string | null;
+    status: {
+      id: string;
+      name: string;
+    };
+    priority: {
+      id: string;
+      name: string;
+    };
+    issuetype: {
+      id: string;
+      name: string;
+    };
+    assignee?: {
+      displayName: string;
+      emailAddress: string;
+    };
+    reporter?: {
+      displayName: string;
+      emailAddress: string;
+    };
+    created: string;
+    updated: string;
+    duedate?: string;
+  };
+}
 
 interface TicketDetailsProps {
-  ticket: Ticket
+  ticket: JiraTicket;
 }
 
 export function TicketDetails({ ticket }: TicketDetailsProps) {
   const [newComment, setNewComment] = useState("")
-  const [comments, setComments] = useState(ticket.comments || [])
+  const [comments, setComments] = useState(ticket.fields.comments || [])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
 
@@ -66,200 +100,118 @@ export function TicketDetails({ ticket }: TicketDetailsProps) {
   }
 
   return (
-    <div className="p-6 bg-muted/30">
-      <Tabs defaultValue="details">
-        <TabsList className="mb-4">
-          <TabsTrigger value="details">Details</TabsTrigger>
-          <TabsTrigger value="comments">Comments ({comments.length})</TabsTrigger>
-          <TabsTrigger value="activity">Activity Log</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="details">
-          <Card>
-            <CardContent className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="p-4 space-y-4">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">{ticket.fields.summary}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <h4 className="text-sm font-medium text-muted-foreground mb-2">Details</h4>
+              <dl className="space-y-2">
                 <div>
-                  <h3 className="text-lg font-semibold mb-4">{ticket.summary}</h3>
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="text-sm font-medium text-muted-foreground">Description</h4>
-                      <p className="mt-1">{ticket.description || "No description provided."}</p>
-                    </div>
-
-                    <div>
-                      <h4 className="text-sm font-medium text-muted-foreground">Type</h4>
-                      <p className="mt-1">{ticket.type}</p>
-                    </div>
-
-                    <div>
-                      <h4 className="text-sm font-medium text-muted-foreground">Components</h4>
-                      <p className="mt-1">{ticket.components?.join(", ") || "No components assigned."}</p>
-                    </div>
-
-                    <div>
-                      <h4 className="text-sm font-medium text-muted-foreground">Labels</h4>
-                      <div className="flex flex-wrap gap-2 mt-1">
-                        {ticket.labels?.map((label) => (
-                          <span key={label} className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full">
-                            {label}
-                          </span>
-                        )) || "No labels assigned."}
-                      </div>
-                    </div>
-                  </div>
+                  <dt className="text-sm text-muted-foreground">Status</dt>
+                  <dd>
+                    <Badge className="mt-1">{ticket.fields.status.name}</Badge>
+                  </dd>
                 </div>
-
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Assignee</h4>
-                    <div className="flex items-center mt-1">
-                      {ticket.assignee ? (
-                        <>
-                          <Avatar className="h-6 w-6 mr-2">
-                            <AvatarImage src={ticket.assignee.avatarUrl} alt={ticket.assignee.name} />
-                            <AvatarFallback>{ticket.assignee.name.charAt(0)}</AvatarFallback>
-                          </Avatar>
-                          <span>{ticket.assignee.name}</span>
-                        </>
-                      ) : (
-                        <span className="text-muted-foreground">Unassigned</span>
-                      )}
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Reporter</h4>
-                    <div className="flex items-center mt-1">
-                      <Avatar className="h-6 w-6 mr-2">
-                        <AvatarImage src={ticket.reporter.avatarUrl} alt={ticket.reporter.name} />
-                        <AvatarFallback>{ticket.reporter.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <span>{ticket.reporter.name}</span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Created</h4>
-                    <p className="mt-1">
-                      {format(new Date(ticket.createdAt), "PPP 'at' p")} (
-                      {formatDistanceToNow(new Date(ticket.createdAt), { addSuffix: true })})
-                    </p>
-                  </div>
-
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Updated</h4>
-                    <p className="mt-1">
-                      {format(new Date(ticket.updatedAt), "PPP 'at' p")} (
-                      {formatDistanceToNow(new Date(ticket.updatedAt), { addSuffix: true })})
-                    </p>
-                  </div>
-
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Due Date</h4>
-                    <p className="mt-1">
-                      {ticket.dueDate ? (
-                        <>
-                          {format(new Date(ticket.dueDate), "PPP")} (
-                          {formatDistanceToNow(new Date(ticket.dueDate), { addSuffix: true })})
-                        </>
-                      ) : (
-                        <span className="text-muted-foreground">No due date</span>
-                      )}
-                    </p>
-                  </div>
-
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Epic Link</h4>
-                    <p className="mt-1">
-                      {ticket.epicLink ? (
-                        <a href="#" className="text-primary hover:underline">
-                          {ticket.epicLink}
-                        </a>
-                      ) : (
-                        <span className="text-muted-foreground">No epic link</span>
-                      )}
-                    </p>
-                  </div>
+                <div>
+                  <dt className="text-sm text-muted-foreground">Priority</dt>
+                  <dd>
+                    <Badge className="mt-1">{ticket.fields.priority.name}</Badge>
+                  </dd>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="comments">
-          <Card>
-            <CardContent className="p-6">
-              <div className="space-y-6">
-                {comments.length === 0 ? (
-                  <p className="text-center text-muted-foreground py-4">No comments yet. Be the first to comment!</p>
-                ) : (
-                  comments.map((comment) => (
-                    <div key={comment.id} className="flex space-x-4">
-                      <Avatar>
-                        <AvatarImage src={comment.author.avatarUrl} alt={comment.author.name} />
-                        <AvatarFallback>{comment.author.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <span className="font-medium">{comment.author.name}</span>
-                            <span className="text-muted-foreground text-sm ml-2">
-                              {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="mt-2 text-sm">{comment.content}</div>
-                      </div>
-                    </div>
-                  ))
-                )}
-
-                <div className="pt-4 border-t">
-                  <h4 className="text-sm font-medium mb-2">Add a comment</h4>
-                  <Textarea
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    placeholder="Write your comment here..."
-                    className="min-h-[100px]"
-                  />
-                  <div className="mt-2 flex justify-end">
-                    <Button onClick={handleAddComment} disabled={!newComment.trim() || isSubmitting}>
-                      {isSubmitting ? "Adding..." : "Add Comment"}
-                    </Button>
-                  </div>
+                <div>
+                  <dt className="text-sm text-muted-foreground">Type</dt>
+                  <dd>
+                    <Badge variant="outline" className="mt-1">
+                      {ticket.fields.issuetype.name}
+                    </Badge>
+                  </dd>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="activity">
-          <Card>
-            <CardContent className="p-6">
-              <div className="space-y-4">
-                {ticket.activityLog?.map((activity, index) => (
-                  <div key={index} className="flex items-start space-x-3">
-                    <div className="w-1 h-full bg-muted-foreground/30 rounded-full" />
-                    <div>
-                      <div className="flex items-center">
+                <div>
+                  <dt className="text-sm text-muted-foreground">Created</dt>
+                  <dd className="mt-1">
+                    {ticket.fields.created ? (
+                      formatDistanceToNow(new Date(ticket.fields.created), { addSuffix: true })
+                    ) : (
+                      <span className="text-muted-foreground">No date</span>
+                    )}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm text-muted-foreground">Updated</dt>
+                  <dd className="mt-1">
+                    {ticket.fields.updated ? (
+                      formatDistanceToNow(new Date(ticket.fields.updated), { addSuffix: true })
+                    ) : (
+                      <span className="text-muted-foreground">No date</span>
+                    )}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm text-muted-foreground">Due Date</dt>
+                  <dd className="mt-1">
+                    {ticket.fields.duedate ? (
+                      formatDistanceToNow(new Date(ticket.fields.duedate), { addSuffix: true })
+                    ) : (
+                      <span className="text-muted-foreground">No due date</span>
+                    )}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+            <div>
+              <h4 className="text-sm font-medium text-muted-foreground mb-2">People</h4>
+              <dl className="space-y-2">
+                <div>
+                  <dt className="text-sm text-muted-foreground">Assignee</dt>
+                  <dd>
+                    {ticket.fields.assignee ? (
+                      <div className="flex items-center mt-1">
                         <Avatar className="h-6 w-6 mr-2">
-                          <AvatarImage src={activity.user.avatarUrl} alt={activity.user.name} />
-                          <AvatarFallback>{activity.user.name.charAt(0)}</AvatarFallback>
+                          <AvatarFallback>
+                            {ticket.fields.assignee.displayName.charAt(0)}
+                          </AvatarFallback>
                         </Avatar>
-                        <span className="font-medium">{activity.user.name}</span>
-                        <span className="text-muted-foreground text-sm ml-2">
-                          {formatDistanceToNow(new Date(activity.timestamp), { addSuffix: true })}
-                        </span>
+                        <span>{ticket.fields.assignee.displayName}</span>
                       </div>
-                      <p className="mt-1 text-sm">{activity.action}</p>
-                    </div>
-                  </div>
-                )) || <p className="text-center text-muted-foreground py-4">No activity recorded for this ticket.</p>}
+                    ) : (
+                      <span className="text-muted-foreground mt-1">Unassigned</span>
+                    )}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm text-muted-foreground">Reporter</dt>
+                  <dd>
+                    {ticket.fields.reporter ? (
+                      <div className="flex items-center mt-1">
+                        <Avatar className="h-6 w-6 mr-2">
+                          <AvatarFallback>
+                            {ticket.fields.reporter.displayName.charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span>{ticket.fields.reporter.displayName}</span>
+                      </div>
+                    ) : (
+                      <span className="text-muted-foreground mt-1">Unknown</span>
+                    )}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+          {ticket.fields.description && (
+            <div className="mt-6">
+              <h4 className="text-sm font-medium text-muted-foreground mb-2">Description</h4>
+              <div className="prose prose-sm max-w-none">
+                {ticket.fields.description}
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   )
 }
