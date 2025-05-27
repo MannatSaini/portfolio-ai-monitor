@@ -186,6 +186,7 @@ export default function DelinquencyReviewPage() {
       priority: ticketFormData.priority,
       assignee: ticketFormData.assignee,
       includeDetails: ticketFormData.includeDetails,
+      labels: ["Underwriting", "Policy", "Delinquency"],
       status: "open"
     });
   }
